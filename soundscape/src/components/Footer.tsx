@@ -3,7 +3,7 @@
 export default function Footer() {
     return (
         <>
-            <section className="bg-[#0D1321] text-gray-600 w-full flex justify-start py-24 p-20 gap-40">
+            <section className="bg-[#0B090A] text-gray-600 w-full flex justify-start py-24 p-20 gap-40">
 
                 <section className="flex flex-col gap-4">
                     <h1 className="text-white text-lg">Support</h1>
@@ -38,7 +38,7 @@ export default function Footer() {
                     <i className="bi bi-twitter-x cursor-pointer hover:text-gray-500"></i>
                 </section>
             </section>
-            <section className="flex justify-center text-white bg-[#0D1321] p-8 text-sm"><p>&copy; Soundwave. Gomolemo Motlhamme. All rights reserved.</p></section>
+            <section className="flex justify-center text-white bg-[#0B090A] p-8 text-sm"><p>&copy; Soundwave. Gomolemo Motlhamme. All rights reserved.</p></section>
         </>
     )
 }
