@@ -29,26 +29,26 @@ export default function Home() {
           </section>
 
           <section className="flex justify-center items-center gap-0.5 my-38">
-            <section className="flex flex-col cursor-pointer justify-between p-4 bg-[#2a2a2b] text-[#B1A7A6] hover:text-[#D3D3D3] hover:scale-101 transition delay-150 duration-300 hover:bg-[#0B090A] h-144 w-max">
-              <div className="bg-white w-100 h-90 max-h-90"></div>
+            <section className="flex flex-col cursor-pointer justify-between p-4 text-[#2a2a2b] border border-[#B1A7A6] bg-[#F5F3F4] hover:bg-[#D3D3D3] hover:scale-101 transition delay-150 duration-300 hover:text-[#0B090A] h-144 w-max">
+              <div className="bg-white border border-[#B1A7A6] w-100 h-90 max-h-90"></div>
               <h1 className="text-4xl w-90 line-clamp-2 mb-4">Apple Watch Ultra 3 Titanium Case with Ocean Band</h1>
-              <p className="text-[#B1A7A6] mb-4">Apple</p>
+              <p className="text-[#161A1D] mb-4">Apple</p>
               <p className="border rounded-full bg-amber-400 w-4 h-4"></p>
               <h1 className="text-3xl  mt-4">R {12635.00}</h1>
             </section>
 
-            <section className="flex flex-col cursor-pointer justify-between  p-4 bg-[#2a2a2b]  text-[#B1A7A6] hover:text-[#D3D3D3] hover:scale-101 transition delay-150 duration-300 hover:bg-[#0B090A] h-144 w-max">
-              <div className="bg-white w-100 h-86 max-h-90"></div>
+            <section className="flex flex-col cursor-pointer justify-between  p-4 text-[#2a2a2b] border border-[#B1A7A6] bg-[#F5F3F4] hover:bg-[#D3D3D3] hover:scale-101 transition delay-150 duration-300 hover:text-[#0B090A] hover:shadow h-144 w-max">
+              <div className="bg-white border border-[#B1A7A6] w-100 h-86 max-h-90"></div>
               <h1 className="text-4xl  w-90 line-clamp-2 mb-4">Smart alarm speaker</h1>
-              <p className="text-[#B1A7A6] mb-4">Apple</p>
+              <p className="text-[#161A1D] mb-4">Apple</p>
               <p className="border rounded-full bg-blue-400 w-4 h-4"></p>
               <h1 className="text-3xl mt-4">R {12635.00}</h1>
             </section>
 
-            <section className="flex flex-col cursor-pointer justify-between p-4 bg-[#2a2a2b]  text-[#B1A7A6] hover:text-[#D3D3D3] hover:scale-101 transition delay-150 duration-300 hover:bg-[#0B090A] h-144 w-max">
-              <div className="bg-white w-100 h-90"></div>
+            <section className="flex flex-col cursor-pointer justify-between p-4 text-[#2a2a2b] border border-[#B1A7A6] bg-[#F5F3F4] hover:bg-[#D3D3D3] hover:scale-101 transition delay-150 duration-300 hover:text-[#0B090A] hover:shadow h-144 w-max">
+              <div className="bg-white border border-[#B1A7A6] w-100 h-90"></div>
               <h1 className="text-4xl w-90 line-clamp-2 mb-4">Apple Watch Ultra 3 Titanium Case with Ocean Band</h1>
-              <p className="text-[#B1A7A6] mb-4">Apple</p>
+              <p className="text-[#161A1D] mb-4">Apple</p>
               <p className="border rounded-full bg-amber-900 w-4 h-4"></p>
               <h1 className="text-3xl mt-4">R {12635.00}</h1>
             </section>

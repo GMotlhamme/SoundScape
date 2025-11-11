@@ -1,16 +1,23 @@
 import { Button } from "@/components/ui/button"
+import { useNavigate, type NavigateFunction } from "react-router";
 
 
 
 export default function Header(){
+  const navigate: NavigateFunction = useNavigate();
+
+  function toProducts():void{
+    navigate("/Products")
+  }
+
     return (
       <>
       {/* bg-[#f0ede0]  bg-[url('/SoundwaveLogo.png')]*/}
-        <section className="flex pl-4 justify-between items-center  p-4 bg-[#F5F3F4]">
+        <section className="flex pl-4 fixed w-full top-0 border-b z-10 justify-between items-center  p-4 bg-[#F5F3F4]">
           <div className="  h-15 w-45 bg-contain bg-no-repeat "></div>
 
           <nav className="flex gap-4 ">
-            <Button variant="ghost" className="cursor-pointer text-sm font-medium">Products</Button>
+            <Button variant="ghost" onClick={toProducts} className="cursor-pointer text-sm font-medium">Products</Button>
             <Button variant="ghost" className="cursor-pointer text-sm font-medium">Community</Button>
             <Button variant="ghost" className="cursor-pointer text-sm font-medium">Support</Button>
           </nav>
