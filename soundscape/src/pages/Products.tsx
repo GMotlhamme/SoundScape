@@ -79,7 +79,7 @@ export default function Products(){
             </section>
           </section>
           <section className="flex justify-center m-8">
-            <button className="p-4 px-8  border border-[#B1A7A6] cursor-pointer">Load more</button>
+            <button className="p-4 px-8 focus:bg-[#D3D3D3]  border border-[#B1A7A6] cursor-pointer">Load more</button>
           </section>
         <Footer />
         </>
