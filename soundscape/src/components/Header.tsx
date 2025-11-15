@@ -15,6 +15,15 @@ export default function Header(){
   function toSupport():void{
     navigate("/Support")
   }
+  function toProfile():void{
+    navigate("/Profile")
+  }
+  function toWishList():void{
+    navigate("/WishList")
+  }
+  function toCheckout():void{
+    navigate("/Checkout")
+  }
 
     return (
       <>
@@ -34,9 +43,9 @@ export default function Header(){
                   <i className="bi bi-search pr-4 pl-2 cursor-pointer"></i>
                 </search>
                 <nav className="flex gap-4">
-                    <button className="cursor-pointer text-xl"><abbr title="Profile"><i className="bi bi-person-circle "></i></abbr></button>
-                    <button className="cursor-pointer text-xl"><abbr title="Wishlist"><i className="bi bi-heart"></i></abbr></button>
-                    <button className="cursor-pointer text-xl"><abbr title="checkout"><i className="bi bi-cart"></i></abbr></button>
+                    <button onClick={toProfile} className="cursor-pointer text-xl"><abbr title="Profile"><i className="bi bi-person-circle "></i></abbr></button>
+                    <button onClick={toWishList} className="cursor-pointer text-xl"><abbr title="Wishlist"><i className="bi bi-heart"></i></abbr></button>
+                    <button onClick={toCheckout} className="cursor-pointer text-xl"><abbr title="checkout"><i className="bi bi-cart"></i></abbr></button>
                 </nav>
             </section>
         </section>
