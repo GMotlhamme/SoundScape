@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Footer from "@/components/FooterComponent";
+import Header from "@/components/HeaderComponent";
 import { useNavigate, type NavigateFunction } from "react-router";
 
 export default function Products(){

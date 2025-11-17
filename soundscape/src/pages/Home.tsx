@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Footer from "@/components/FooterComponent";
+import Header from "@/components/HeaderComponent";
 
 export default function Home() {
   const slogan: string[] = [
