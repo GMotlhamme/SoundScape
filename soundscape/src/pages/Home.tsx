@@ -65,7 +65,7 @@ export default function Home() {
         </section>
 
         {/* products we offer on Soundscape displayed by category */}
-        <section className="flex gap-0.5 w-full text-lg text-white overflow-x-scroll">
+        <section className="flex gap-0.5 w-full text-lg text-white">
           {products.map((product: string, index: number) => (
             <button key={index} className="bg-[#660708] h-24 w-200 cursor-pointer transition delay-150 duration-300 hover:bg-[#A4161A]">{product}</button>
           ))}
