@@ -7,6 +7,7 @@ import Products from "./pages/Products";
 import SingleProductPage from "./pages/SingleProductPage";
 import Support from "./pages/Support";
 import WishList from "./pages/WishList";
+import Community from "./pages/Community";
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
       <Route path="/Products" element={<Products/>}/>
       <Route path="/SingleProduct" element={<SingleProductPage/>}/>
       <Route path="/Support" element={<Support/>}/>
+      <Route path="/Community" element={<Community/>}/>
       <Route path="/WishList" element={<WishList/>}/>
     </Routes>
     </BrowserRouter>
