@@ -38,11 +38,14 @@ export default function Header() {
   function toCheckout(): void {
     navigate("/Checkout")
   }
+  function toCommunity(): void {
+    navigate("/Community")
+  }
 
   return (
     <>
       <section className="flex pl-4 fixed w-full top-0 border-b z-10 justify-between items-center  p-4 bg-[#F5F3F4]">
-        <div onClick={toHome} className=" h-10 w-40 bg-[url('/Logo.png')] opacity-70 bg-contain bg-no-repeat "></div>
+        <div onClick={toHome} className=" h-10 w-40 bg-[url('/NewLogo.png')] opacity-70 bg-contain bg-no-repeat "></div>
 
         <nav className="flex gap-4 ">
           {window.location.pathname === "/" ?
@@ -55,7 +58,7 @@ export default function Header() {
 
           {window.location.pathname === "/Community" ?
             <Button className="cursor-pointer bg-[#414141] text-white text-sm font-medium">Community</Button>
-            : <Button variant="ghost" className="cursor-pointer text-sm font-medium">Community</Button>}
+            : <Button variant="ghost" onClick={toCommunity} className="cursor-pointer text-sm font-medium">Community</Button>}
 
           {window.location.pathname === "/Support" ?
             <Button className="cursor-pointer bg-[#414141] text-white text-sm font-medium">Support</Button>
