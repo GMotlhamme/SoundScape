@@ -5,7 +5,7 @@ export default function OrderHistoryComponent(){
         id: number;
         date: string;
         name: string;
-        quantity: number;
+        quantity?: number;
         description: string;
     }
     const orders: Order[] = [
