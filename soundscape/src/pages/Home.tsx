@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Footer from "@/components/FooterComponent";
+import Header from "@/components/HeaderComponent";
 
 export default function Home() {
   const slogan: string[] = [
@@ -65,7 +65,7 @@ export default function Home() {
         </section>
 
         {/* products we offer on Soundscape displayed by category */}
-        <section className="flex gap-0.5 w-full text-lg text-white overflow-x-scroll">
+        <section className="flex gap-0.5 w-full text-lg text-white">
           {products.map((product: string, index: number) => (
             <button key={index} className="bg-[#660708] h-24 w-200 cursor-pointer transition delay-150 duration-300 hover:bg-[#A4161A]">{product}</button>
           ))}
@@ -79,10 +79,12 @@ export default function Home() {
               <div className="bg-white border border-[#B1A7A6] w-100 h-90 max-h-90">
                 <img className="w-full h-full" src={product.image} alt={product.name} />
               </div>
-              <h1 className="text-4xl w-90 line-clamp-2 mb-2">{product.name}</h1>
-              <p className="text-[#161A1D] mb-4">{product.brand}</p>
-              <p className="border rounded-full bg-amber-400 w-4 h-4"></p>
-              <h1 className="text-3xl  mt-4">R {product.price}</h1>
+              <div className="h-50 flex flex-col justify-between">
+                <h1 className="text-4xl w-90 line-clamp-2 mb-2">{product.name}</h1>
+                <p className="text-[#161A1D] mb-4">{product.brand}</p>
+                <p className="border rounded-full bg-amber-400 w-4 h-4"></p>
+                <h1 className="text-3xl  mt-4">R {product.price}</h1>
+              </div>
             </section>
           )).slice(0, 3)}
         </section>
