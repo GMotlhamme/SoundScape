@@ -1,14 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import type { Order } from "@/types/systemTypes"
+import { useState } from "react";
+import { Link } from "react-router";
 
+/**
+ * A React component that is used to render the order history page.
+ * It displays all the orders that the user has made, with each order being displayed in a section element.
+ * The component also renders a link to the user's profile page.
+ * The component sends each order's data to the SingleProduct page when an order is clicked.
+ */
 export default function OrderHistoryComponent(){
-    interface Order{
-        id: number;
-        date: string;
-        name: string;
-        quantity?: number;
-        description: string;
-    }
-    const orders: Order[] = [
+     const [orderItem, setOrderItem] = useState<Order[]>(
+    [
         {
             id: 101,
             date: "March 2023",
@@ -77,7 +80,7 @@ export default function OrderHistoryComponent(){
             quantity: 2,
             description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus unde ad molestiae ipsa alias, quasi ullam quibusdam natus neque tempore molestias, non ut excepturi, quo itaque veniam ex vel atque!"
         }
-    ]
+    ]);
     return(
         <>
         <section className="mt-30 h-900">
@@ -92,8 +95,9 @@ export default function OrderHistoryComponent(){
                 <section className="h-120 w-max overflow-y-scroll">
 
                 <section className="grid grid-cols-2 gap-8 text-neutral-800 w-max pr-4 ">
-                    {orders.map((item, index)=>
+                    {orderItem.map((item, index)=>
                     <section key={index} className="border border-[#B1A7A6] h-max w-max cursor-pointer p-4 ">
+                    <Link to={"/SingleProduct"} state={item}  >
                     <div>
                         <div className="flex items-center gap-4">
                             <h3 className="text-xl font-bold">{item.name}</h3>
@@ -102,6 +106,7 @@ export default function OrderHistoryComponent(){
                     <div className="">{item.date}</div>
                         <p className="w-90 line-clamp-2">{item.description}</p>
                     </div>
+                    </Link>
                     </section>)}
                 </section>
                 </section>
