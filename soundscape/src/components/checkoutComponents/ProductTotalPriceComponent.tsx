@@ -1,7 +1,7 @@
 export default function ProductTotalPriceComponent(props: string | number| any){
     return(
         <>
-        <section className="flex my-4 py-4 w-md bg-white rounded-lg  gap-4">
+        <section className="flex my-4 py-4 w-full bg-white rounded-lg  gap-4">
             <div className="flex flex-col w-full justify-between px-4">
                 <div className="flex justify-between font-semibold text-md ">
                     <p>{props.brand} Subtotal</p>  
