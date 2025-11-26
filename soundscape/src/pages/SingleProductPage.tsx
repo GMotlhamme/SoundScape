@@ -1,10 +1,12 @@
 import Footer from "@/components/FooterComponent";
 import Header from "@/components/HeaderComponent";
+import { useState } from "react";
 import { useLocation } from "react-router";
 
 interface Product {
     name: string;
     brand: string;
+    description?: string;
     price: number;
     image?: string;
 }
@@ -18,6 +20,34 @@ interface Product {
 export default function SingleProductPage() {
     const location = useLocation();
     const singleProduct: Product = location.state;
+    const [addedToCart, setAddedToCart] = useState<boolean>(false);
+
+    /**
+     * Handles adding a product to the cart
+     * Retrieves the cart data from local storage, parses it, and adds the single product to the cart
+     * If the cart data is not in local storage, it creates a new cart with the single product
+     * If there is an error parsing the cart data, it logs the error and creates a new cart with the single product
+     * Sets the updated cart data back to local storage as an Array of product(s)
+     */
+    function handleAddToCart() {
+        const keyInLocalStorage = "cartItem";
+        const rawCartDataFromLocalStorage = localStorage.getItem(keyInLocalStorage);
+        let cartData: Product[] = [];
+
+        if (rawCartDataFromLocalStorage) {
+            try {
+                const parseCartData = JSON.parse(rawCartDataFromLocalStorage);
+                cartData = Array.isArray(parseCartData) ? parseCartData : [parseCartData];
+            } catch (error) {
+                console.error("Error parsing cart data from localStorage:", error);
+                cartData = [];
+            }
+        }
+        cartData.push(singleProduct);
+        localStorage.setItem(keyInLocalStorage, JSON.stringify(cartData));
+        setAddedToCart(true);
+
+    }
     return (
         <>
             <Header />
@@ -33,7 +63,8 @@ export default function SingleProductPage() {
                             <h2 className="text-3xl">R{singleProduct.price}</h2>
                             <div className="flex gap-2">
 
-                                <button className="border border-[#B1A7A6] cursor-pointer hover:bg-[#D3D3D3] transition px-24 py-2">Add to cart</button>
+                                {addedToCart ?
+                                <button className="border border-[#B1A7A6] cursor-pointer bg-[#D3D3D3] transition px-24 py-2">Added to cart!</button> :<button onClick={handleAddToCart} className="border border-[#B1A7A6] cursor-pointer hover:bg-[#D3D3D3] transition px-24 py-2">Add to cart</button>}
                                 <button className="px-4 border border-[#B1A7A6] cursor-pointer text-2xl"><abbr title="Wishlist"><i className="bi bi-heart"></i></abbr></button>
 
                             </div>
