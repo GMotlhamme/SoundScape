@@ -1,20 +1,55 @@
 import ProductMiniCardComponent from "@/components/checkoutComponents/productMiniCardComponent";
 import ProductTotalPriceComponent from "@/components/checkoutComponents/ProductTotalPriceComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 
 
+/**
+ * A React component that renders the checkout page.
+ * It displays a summary of the items in the cart, a shipping options section, and a payment form.
+ * Users can remove items from the cart using the ProductMiniCardComponent.
+ * The shipping options section allows the user to select either "Delivery" or "Pick Up in Store".
+ * The payment form allows the user to enter their credit card details and submit an order.
+ * The component also displays the total price of the items in the cart, including shipping costs.
+ * If the user selects "Pick Up in Store", shipping is free.
+ * If the user selects "Delivery", shipping costs R100.
+ * The component also displays a "Pay" button that submits the order when clicked.
+ * The component is connected to the state and will re-render when the state changes.
+ */
 export default function Checkout() {
     const [shipping, setShipping] = useState<string>("Pick Up in Store");
+    const [cartItems, setCartItems] = useState<any[]>([]);
     const navigate = useNavigate();
-    function calculateTotalPrice(prices: number[]): number {
-        return prices.reduce((total, price) => total + price, 0);
-    }
+    
 
     function toHome() {
         navigate("/")
     }
+
+    useEffect(()=> {
+        const cartItemsFromLocalStorage = localStorage.getItem("cartItem");
+        if(!cartItemsFromLocalStorage){
+           return setCartItems([])
+        } else {
+            const parsedItems = JSON.parse(cartItemsFromLocalStorage);
+            setCartItems(parsedItems);
+        }
+    },[])
+    console.log(cartItems);
+
+/**
+ * Removes an item from the cart based on its index
+ * @param {number} indexToRemove - the index of the item to remove
+ * Updates the cartItems state and local storage
+ * The underscore (_) is used to ignore the first parameter of the filter callback function, which is the current item being processed
+ */
+    function removeItemFromCart(indexToRemove: number){
+        const updated = cartItems.filter((_, index) => index !== indexToRemove);
+    setCartItems(updated);
+    localStorage.setItem("cartItem", JSON.stringify(updated));
+    }
+      
 
     return (
         <>
@@ -29,9 +64,14 @@ export default function Checkout() {
 
                     </div>
                     <section className="flex flex-col gap-4">
-                        <ProductMiniCardComponent />
-                        <ProductMiniCardComponent />
-                        <ProductMiniCardComponent />
+                        {cartItems.length > 0 ? 
+                        cartItems.map((product,index) => (
+                        <ProductMiniCardComponent 
+                        key={index}
+                        removeItemFromCart={()=> removeItemFromCart(index)}
+                        cartItems ={product}
+                        /> ))
+                        : (<p>Your cart is empty</p>)}
                     </section>
                 </section>
 
@@ -105,8 +145,8 @@ export default function Checkout() {
                             <input type="text" className="rounded border p-2 bg-white" placeholder="Name on card" />
                             <ProductTotalPriceComponent
                                 shipping={shipping}
-
-                                calculateTotalPrice={calculateTotalPrice}
+                                productsInCart={cartItems}
+                                
                             />
                             <button className="w-full p-2 text-white rounded bg-[#2105d9] cursor-pointer">Pay</button>
                         </form>
