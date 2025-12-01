@@ -1,38 +1,77 @@
 import Footer from "@/components/FooterComponent"
 import Header from "@/components/HeaderComponent"
+import { useEffect, useState } from "react"
+import type { ProductInformation } from "@/types/systemTypes"
+
 
 /**
- * A component that displays the user's wishlist
- * This component is a single page that displays all the products that the user has added to their wishlist
- * It includes a header, a section for the wishlist, and a footer
- * The wishlist section contains a heading that says "My Wishlist" and a paragraph that says "Just a few things you've been eyeing!"
- * Below the heading and paragraph, there is a div that contains a background image of a wishlist picture
- * Below the div, there is a grid section that contains all the products in the user's wishlist
- * Each product is displayed in a section element that contains a div element with a background image of the product, a paragraph element with the product name, and a paragraph element with the product price
- * The component also includes a footer element at the bottom of the page
+ * A React component that renders the Wishlist page.
+ * It displays a title, a short description, and a list of items in the user's wishlist.
+ * The items are retrieved from local storage and are displayed in a grid layout.
+ * If there are no items in the wishlist, a message is displayed instead.
+ * The component also renders the Header and Footer components.
  */
-export default function WishList(){
-    return(
+export default function WishList() {
+    const [wishlistItems, setWishlistItems] = useState<[]>()
+
+    useEffect(() => {
+        try {
+            const retrieveFromLocalStorage = localStorage.getItem("WishListItem")
+            const parseItems = retrieveFromLocalStorage ? JSON.parse(retrieveFromLocalStorage) : []
+            setWishlistItems(parseItems)
+        } catch {
+            setWishlistItems([])
+        }
+    }, [])
+
+
+    /**
+     * Removes an item from the wishlist at the given index.
+     * Retrieves the wishlist items from local storage, removes the item at the given index, and updates the local storage and state.
+     * @param {number} indexOfItem - the index of the item to remove
+     */
+    function RemoveItem(indexOfItem: number) {
+        const retrieveFromLocalStorage = localStorage.getItem("WishListItem")
+        const parseItems = retrieveFromLocalStorage ? JSON.parse(retrieveFromLocalStorage) : []
+        parseItems.splice(indexOfItem, 1) //where to start and how many to delete
+        localStorage.setItem("WishListItem", JSON.stringify(parseItems))
+        setWishlistItems(parseItems)
+    }
+
+
+    return (
         <>
-        <Header /> 
-        <section className="mt-30 h-max flex">
-            <section className="p-24 pt-0">
-                <h1 className="text-5xl mb-4">My Wishlist</h1>
-                <p className="">Just a few things you've been eyeing!</p>
-                <div className="flex bg-[url('/wishlistPic.jpg')] bg-cover bg-no-repeat w-150 h-170 items-center mb-8"></div>
-            </section>
+            <Header />
+            <section className="mt-30 h-max flex">
+                <section className="p-24 pt-0">
+                    <h1 className="text-5xl mb-4">My Wishlist</h1>
+                    <p className="">Just a few things you've been eyeing!</p>
+                    <div className="flex bg-[url('/wishlistPic.jpg')] bg-cover bg-no-repeat w-150 h-170 items-center mb-8"></div>
+                </section>
                 <section className="h-120 w-max pt-18">
 
-                    <section className="grid grid-cols-2 gap-8 text-neutral-800 w-max pr-4 ">
-                        <section className="w-max border border-gray-300 rounded cursor-pointer p-4 flex flex-col items-start">
-                            <div className="bg-white border border-gray-300 rounded p-18 mb-4"></div>
-                            <p className="line-clamp-1">Product Name</p>
-                            <p className="font-bold">R99.99</p>
-                        </section>
+                    <section className="grid grid-cols-3 gap-8 text-neutral-800 w-max pr-4 ">
+                        {wishlistItems && wishlistItems?.length > 0 ?
+                            wishlistItems.map((item: ProductInformation, index: number) => (
+                                <section key={index} className="w-max border border-gray-300 rounded cursor-pointer p-4 flex flex-col items-start">
+                                    <div className="bg-white border border-gray-300 rounded w-38 h-38 mb-4">
+                                        <img className="object-cover " src={item.image?.[0]} alt={item.name} />
+                                    </div>
+                                    <div className="flex justify-between w-full">
+                                        <div>
+                                            <p className="line-clamp-1">{item.name}</p>
+                                            <p className="font-bold">R{item.price}</p>
+                                        </div>
+                                        <i onClick={() => RemoveItem(index)} className="bi bi-x-circle text-xl  text-[#A4161A] cursor-pointer"></i>
+                                    </div>
+                                </section>
+
+                            ))
+                            : "Nothing in your sights"}
                     </section>
                 </section>
-        </section>
-        <Footer />
+            </section>
+            <Footer />
         </>
     )
 }

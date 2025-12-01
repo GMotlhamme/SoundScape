@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
 import { useNavigate, type NavigateFunction } from "react-router";
-
+import type { ProductInformation} from "@/types/systemTypes"
 
 
 /**
@@ -14,7 +14,7 @@ import { useNavigate, type NavigateFunction } from "react-router";
 
 export default function Header() {
   const navigate: NavigateFunction = useNavigate();
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState<ProductInformation[]>([]);
 
   //navigate to the products page
   function toProducts(): void {
@@ -87,7 +87,7 @@ export default function Header() {
           <nav className="flex gap-4">
             <button onClick={toProfile} className="cursor-pointer text-xl"><abbr title="Profile"><i className="bi bi-person-circle "></i></abbr></button>
             <button onClick={toWishList} className="cursor-pointer text-xl"><abbr title="Wishlist"><i className="bi bi-heart"></i></abbr></button>
-            <button onClick={toCheckout} className="cursor-pointer text-xl flex"><abbr title="checkout"><i className="bi bi-cart"></i></abbr><p className="italic text-sm">{numberOfItemsInCart}</p></button>
+            <button onClick={toCheckout} className="cursor-pointer text-xl flex"><abbr title="checkout"><i className="bi bi-cart"></i></abbr><p className="italic text-sm">{numberOfItemsInCart !== 0 && numberOfItemsInCart}</p></button>
           </nav>
         </section>
       </section>

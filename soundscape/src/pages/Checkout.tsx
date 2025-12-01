@@ -2,7 +2,7 @@ import ProductMiniCardComponent from "@/components/checkoutComponents/productMin
 import ProductTotalPriceComponent from "@/components/checkoutComponents/ProductTotalPriceComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-
+import type { ProductInformation } from "@/types/systemTypes";
 
 
 /**
@@ -19,7 +19,7 @@ import { useNavigate } from "react-router";
  */
 export default function Checkout() {
     const [shipping, setShipping] = useState<string>("Pick Up in Store");
-    const [cartItems, setCartItems] = useState<any[]>([]);
+    const [cartItems, setCartItems] = useState<ProductInformation[]>([]);
     const navigate = useNavigate();
     
 
@@ -49,7 +49,11 @@ export default function Checkout() {
     setCartItems(updated);
     localStorage.setItem("cartItem", JSON.stringify(updated));
     }
-      
+      function payNow(){
+        setCartItems([]);
+        localStorage.removeItem("cartItem");
+        navigate("/");
+      }
 
     return (
         <>
@@ -65,11 +69,11 @@ export default function Checkout() {
                     </div>
                     <section className="flex flex-col gap-4">
                         {cartItems.length > 0 ? 
-                        cartItems.map((product,index) => (
+                        cartItems.map((product: ProductInformation,index) => (
                         <ProductMiniCardComponent 
                         key={index}
                         removeItemFromCart={()=> removeItemFromCart(index)}
-                        cartItems ={product}
+                        cartItems={product}
                         /> ))
                         : (<p>Your cart is empty</p>)}
                     </section>
@@ -148,7 +152,7 @@ export default function Checkout() {
                                 productsInCart={cartItems}
                                 
                             />
-                            <button className="w-full p-2 text-white rounded bg-[#2105d9] cursor-pointer">Pay</button>
+                            <button onClick={payNow} className="w-full p-2 text-white rounded bg-[#2105d9] cursor-pointer">Pay</button>
                         </form>
                     </section>
                 </section>
