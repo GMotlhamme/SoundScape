@@ -3,7 +3,10 @@ export interface ProductInformation {
   name: string;
   brand?: string;
   price: number;
-  image?: string;
+  category?: string;
+  quantity?: number;
+  description?: string;
+  image?: string[];
 }
 
 // types for user orders/ past purchases
@@ -14,3 +17,8 @@ export interface Order{
         quantity?: number;
         description: string;
     }
+
+    export type ProductMiniCardProps = {
+    cartItems: ProductInformation;
+    removeItemFromCart?: () => void;
+};

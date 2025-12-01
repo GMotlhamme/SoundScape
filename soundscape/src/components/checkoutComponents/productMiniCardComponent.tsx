@@ -1,6 +1,23 @@
-export default function ProductMiniCardComponent({ cartItems, removeItemFromCart }: any) {
+import type { ProductMiniCardProps } from "@/types/systemTypes";
+
+/**
+ * A React component that displays a single product in a cart.
+ * It receives the product to display and an optional function to remove the item from the cart.
+ * If the removeItemFromCart function is not provided, it will remove the item from the cart by removing the item from local storage.
+ * The component displays the product name, brand, price, and quantity.
+ * It also displays a button to remove the item from the cart.
+ * The component is connected to the state and will re-render when the state changes.
+ * @param {object} props - The component props object.
+ * @param {ProductMiniCardProps.cartItems} props.cartItems - The product to display.
+ * @param {ProductMiniCardProps.removeItemFromCart} props.removeItemFromCart - An optional function to remove the item from the cart.
+ */
+export default function ProductMiniCardComponent({ cartItems, removeItemFromCart }: ProductMiniCardProps) {
     function handleRemove() {
-        removeItemFromCart ? removeItemFromCart() : localStorage.removeItem("cartItem");
+        if (removeItemFromCart) {
+            removeItemFromCart();
+        } else {
+            localStorage.removeItem("cartItem");
+        }
     }
     return (
         <>
@@ -9,7 +26,7 @@ export default function ProductMiniCardComponent({ cartItems, removeItemFromCart
 
 
                     <div className="w-24 h-24 ">
-                        <img className="w-full h-full object-cover" src={cartItems.image} alt={cartItems.name} />
+                        <img className="w-full h-full object-cover" src={cartItems.image?.[0]} alt={cartItems.name} />
                     </div>
                     <div className="flex flex-col justify-around px-4 w-full">
                         <div className="flex justify-between items-center w-full">

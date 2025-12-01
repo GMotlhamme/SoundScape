@@ -1,7 +1,7 @@
 import Footer from "@/components/FooterComponent";
 import Header from "@/components/HeaderComponent";
 import { useState } from "react";
-import { useLocation } from "react-router";
+import {  useLocation } from "react-router";
 
 interface Product {
     name: string;
@@ -21,6 +21,8 @@ export default function SingleProductPage() {
     const location = useLocation();
     const singleProduct: Product = location.state;
     const [addedToCart, setAddedToCart] = useState<boolean>(false);
+    const [addedToWishList, setAddedToWishList] = useState<boolean>(false);
+
 
     /**
      * Handles adding a product to the cart
@@ -46,6 +48,25 @@ export default function SingleProductPage() {
         cartData.push(singleProduct);
         localStorage.setItem(keyInLocalStorage, JSON.stringify(cartData));
         setAddedToCart(true);
+    }
+
+    function handleToWishList() {
+        const keyInLocalStorage = "WishListItem";
+        const rawWishListDataFromLocalStorage = localStorage.getItem(keyInLocalStorage);
+        let WishListData = []
+
+        if (rawWishListDataFromLocalStorage) {
+            try {
+                const parseCartData = JSON.parse(rawWishListDataFromLocalStorage);
+                WishListData = Array.isArray(parseCartData) ? parseCartData : [parseCartData];
+            } catch (error) {
+                console.error("Error parsing cart data from localStorage:", error);
+                WishListData = [];
+            }
+        }
+        WishListData.push(singleProduct);
+        localStorage.setItem(keyInLocalStorage, JSON.stringify(WishListData));
+        setAddedToWishList(true);
 
     }
     return (
@@ -57,15 +78,22 @@ export default function SingleProductPage() {
 
                         <h1 className="text-5xl">{singleProduct.name}</h1>
                         <p>{singleProduct.brand}</p>
-                        <p className="w-160">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo eos est cumque facilis, facere totam at blanditiis asperiores quam aspernatur molestiae nulla autem rerum reprehenderit corrupti nesciunt itaque iusto. Vero.</p>
+                        <p className="w-160">{singleProduct.description || "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo eos est cumque facilis, facere totam at blanditiis asperiores quam aspernatur molestiae nulla autem rerum reprehenderit corrupti nesciunt itaque iusto. Vero."}</p>
                         <p>color</p>
                         <div className="flex flex-col gap-4">
                             <h2 className="text-3xl">R{singleProduct.price}</h2>
                             <div className="flex gap-2">
 
                                 {addedToCart ?
-                                <button className="border border-[#B1A7A6] cursor-pointer bg-[#D3D3D3] transition px-24 py-2">Added to cart!</button> :<button onClick={handleAddToCart} className="border border-[#B1A7A6] cursor-pointer hover:bg-[#D3D3D3] transition px-24 py-2">Add to cart</button>}
-                                <button className="px-4 border border-[#B1A7A6] cursor-pointer text-2xl"><abbr title="Wishlist"><i className="bi bi-heart"></i></abbr></button>
+                                    <button className="border border-[#B1A7A6] cursor-pointer bg-[#D3D3D3] transition px-24 py-2">Added to cart!</button> : 
+                                    <button onClick={handleAddToCart} className="border border-[#B1A7A6] cursor-pointer hover:bg-[#D3D3D3] transition px-24 py-2">Add to cart</button>
+                                }
+
+                                {addedToWishList ? 
+                                    <button className="px-4 border border-[#B1A7A6] cursor-pointer text-2xl"><abbr title="Wishlist"><i className="bi bi-heart-fill text-red-600"></i></abbr></button> 
+                                    : <button onClick={handleToWishList} className="px-4 border border-[#B1A7A6] cursor-pointer text-2xl"><abbr title="Wishlist"><i className="bi bi-heart"></i></abbr></button>
+                                }
+
 
                             </div>
                         </div>

@@ -8,26 +8,26 @@ import { Link } from "react-router";
 
 
 export default function Home() {
-  const [storeItem, setStoreItem] = useState<ProductInformation[]>([
+  const [storeItem] = useState<ProductInformation[]>([
     {
       name: "Air Pods Pro",
       brand: "Apple",
       price: 12999.00,
-      image: "/appleAirPodsPro.png"
+      image: ["/appleAirPodsPro.png"]
     },
 
     {
       name: "FLIP 5",
       brand: "JBL",
       price: 5999.00,
-      image: "/appleAirPodsPro.png"
+      image: ["/appleAirPodsPro.png"]
     },
 
     {
       name: "Quantum 2",
       brand: "SoundCore",
       price: 2699.00,
-      image: "/appleAirPodsPro.png"
+      image: ["/appleAirPodsPro.png"]
     },
   ])
 
@@ -76,7 +76,7 @@ export default function Home() {
               {/* navigating to the single product page with the product as state */}
               <Link to={"/SingleProduct"} state={product}>
                 <div className="bg-white border border-[#B1A7A6] w-100 h-90 max-h-90">
-                  <img className="w-full h-full" src={product.image} alt={product.name} />
+                  <img className="w-full h-full" src={product.image?.[0]} alt={product.name} />
                 </div>
                 <div className="h-50 flex flex-col justify-between">
                   <h1 className="text-4xl w-90 line-clamp-2 mb-2">{product.name}</h1>
