@@ -96,7 +96,9 @@ export default function Home() {
           <section className="backdrop-blur-sm">
 
             <article className="flex p-12 text-2xl text-white items-center ">SoundScape offers all lovers of sound an escape in the form of a multitude of events where creatives lovers of sound and everyone in between to get insight in the future of sound or just a space to jam. Come get lost in sound.</article>
-            <button className="flex p-2 px-8 mx-12 text-2xl text-white items-center border border-gray-500  cursor-pointer">Learn More</button>
+            <Link to={"/Products"}>
+            <button  className="flex p-2 px-8 mx-12 text-2xl text-white items-center border border-gray-500  cursor-pointer">Learn More</button>
+            </Link>
           </section>
         </section>
         <Footer />
