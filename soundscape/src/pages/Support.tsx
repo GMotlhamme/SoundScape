@@ -89,7 +89,7 @@ export default function Support(){
                 className="p-2 bg-white text-black h-10 rounded w-full inset-shadow-sm border border-zinc-200"
               />
               <PhoneInput
-                containerClass="w-full bg-[#F5F3F4] flex items-center gap-2 inset-shadow-sm border  rounded"
+                containerClass="w-full bg-[#F5F3F4] flex items-center gap-2 inset-shadow-sm border mt-6 rounded"
                 inputClass="!w-full !h-10 !text-black bg-white"
                 inputProps={{ name: "phone" }}
                 placeholder="082 123 4567"
