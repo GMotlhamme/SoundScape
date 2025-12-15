@@ -50,7 +50,7 @@ export default function Home() {
     <>
       <section className="h-screen min-h-min  bg-[#F5F3F4]">
         <Header />
-        <div className="bg-[url('/SoundEscape.png')] h-60 flex justify-center p-18 mt-36 mx-16 bg-contain bg-no-repeat"></div>
+        {/* <div className="bg-[url('/SoundEscape.png')] h-60 flex justify-center p-18 mt-36 mx-16 bg-contain bg-no-repeat"></div> */}
         <div className="bg-[url('/introSpeakers.jpg')] h-150 w-full  bg-cover bg-no-repeat"></div>
 
         {/* carousel of slogans */}

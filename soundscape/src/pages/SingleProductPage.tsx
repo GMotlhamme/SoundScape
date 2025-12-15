@@ -1,7 +1,7 @@
 import Footer from "@/components/FooterComponent";
 import Header from "@/components/HeaderComponent";
-import { useState } from "react";
-import {  useLocation } from "react-router";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 interface Product {
     name: string;
@@ -22,7 +22,8 @@ export default function SingleProductPage() {
     const singleProduct: Product = location.state;
     const [addedToCart, setAddedToCart] = useState<boolean>(false);
     const [addedToWishList, setAddedToWishList] = useState<boolean>(false);
-
+    const keyInLocalStorage = "WishListItem";
+    const rawWishListDataFromLocalStorage = localStorage.getItem(keyInLocalStorage);
 
     /**
      * Handles adding a product to the cart
@@ -50,9 +51,18 @@ export default function SingleProductPage() {
         setAddedToCart(true);
     }
 
+   
+/**
+ * Handles adding a product to the wishlist
+ * Retrieves the wishlist data from local storage, parses it, and adds the single product to the wishlist
+ * If the wishlist data is not in local storage, it creates a new wishlist with the single product
+ * If there is an error parsing the wishlist data, it logs the error and creates a new wishlist with the single product
+ * Makes sure to not add duplicate items to the wishlist
+ * Sets the updated wishlist data back to local storage as an Array of product(s)
+ * Sets the addedToWishList state to true if the item is added successfully
+ */
     function handleToWishList() {
-        const keyInLocalStorage = "WishListItem";
-        const rawWishListDataFromLocalStorage = localStorage.getItem(keyInLocalStorage);
+        
         let WishListData = []
 
         if (rawWishListDataFromLocalStorage) {
@@ -64,11 +74,36 @@ export default function SingleProductPage() {
                 WishListData = [];
             }
         }
+
+        //making sure to not add duplicate items to the wishlist
+        const alreadyInList = WishListData.some(item => item.name === singleProduct.name);
+        if (alreadyInList) {
+            console.log("Item already in wishlist");
+            setAddedToWishList(true);
+            return;
+        }
         WishListData.push(singleProduct);
-        localStorage.setItem(keyInLocalStorage, JSON.stringify(WishListData));
         setAddedToWishList(true);
+        localStorage.setItem(keyInLocalStorage, JSON.stringify(WishListData));
 
     }
+
+    // checking if the item is already in the wishlist and setting the state accordingly on arrival
+    useEffect(() => {
+        if (rawWishListDataFromLocalStorage) {
+            try {
+                const parseWishListData = JSON.parse(rawWishListDataFromLocalStorage);
+                const wishListDataArray = Array.isArray(parseWishListData) ? parseWishListData : [parseWishListData];
+                const isInWishList = wishListDataArray.some((item: Product) => item.name === singleProduct.name);
+                if(isInWishList){
+                    setAddedToWishList(true);
+                }
+            } catch (error) {
+                console.error("Error parsing wishlist data from localStorage:", error);
+            }}
+    }, [rawWishListDataFromLocalStorage, singleProduct.name]);
+
+    
     return (
         <>
             <Header />
@@ -85,12 +120,12 @@ export default function SingleProductPage() {
                             <div className="flex gap-2">
 
                                 {addedToCart ?
-                                    <button className="border border-[#B1A7A6] cursor-pointer bg-[#D3D3D3] transition px-24 py-2">Added to cart!</button> : 
+                                    <button className="border border-[#B1A7A6] cursor-pointer bg-[#D3D3D3] transition px-24 py-2">Added to cart!</button> :
                                     <button onClick={handleAddToCart} className="border border-[#B1A7A6] cursor-pointer hover:bg-[#D3D3D3] transition px-24 py-2">Add to cart</button>
                                 }
 
-                                {addedToWishList ? 
-                                    <button className="px-4 border border-[#B1A7A6] cursor-pointer text-2xl"><abbr title="Wishlist"><i className="bi bi-heart-fill text-red-600"></i></abbr></button> 
+                                {addedToWishList ?
+                                    <button className="px-4 border border-[#B1A7A6] cursor-pointer text-2xl"><abbr title="Wishlist"><i className="bi bi-heart-fill text-red-600"></i></abbr></button>
                                     : <button onClick={handleToWishList} className="px-4 border border-[#B1A7A6] cursor-pointer text-2xl"><abbr title="Wishlist"><i className="bi bi-heart"></i></abbr></button>
                                 }
 
