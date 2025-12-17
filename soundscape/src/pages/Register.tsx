@@ -2,8 +2,12 @@ import { Link } from "react-router";
 
 export default function Register(){
     return(
-        <>
-        <section className="flex justify-center items-center w-full h-full my-28">
+        <>            
+        <section className="w-full h-screen z-0">
+
+                        <img className="object-cover w-full h-full" src="/LoginSpeaker.jpg" alt="" />
+
+        <section className="flex justify-center items-center w-full h-full absolute backdrop-blur-xs backdrop-brightness-50 top-0 z-1">
             <form action="" className="p-4 flex flex-col  bg-neutral-700 text-white w-96 rounded-md">
                 <fieldset >
                 <legend id="email">Email:</legend>
@@ -26,6 +30,7 @@ export default function Register(){
                 </Link>
             </form>
         </section>
+            </section>
         </>
     )
 }
