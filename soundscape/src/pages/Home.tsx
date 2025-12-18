@@ -70,7 +70,7 @@ export default function Home() {
         </section>
 
         {/* displaying the top 3 trending products  */}
-        <section className="flex justify-center items-center gap-0.5 my-38">
+        <section className="flex justify-center items-center gap-14 my-38">
           {storeItem.map((product: ProductInformation, index: number) => (
             <section key={index} className="flex flex-col cursor-pointer justify-between p-4 text-[#2a2a2b] border border-[#B1A7A6] bg-[#F5F3F4] hover:bg-[#D3D3D3] hover:scale-101 transition delay-150 duration-300 hover:text-[#0B090A] h-144 w-max">
               {/* navigating to the single product page with the product as state */}
