@@ -6,6 +6,8 @@ import { Link, useLocation } from "react-router";
 export default function ProductCategory(){
     const location = useLocation();
     const storeItem: ProductInformation[] = location.state as ProductInformation[];
+    
+    //API CALL to fetch products by category can be implemented here
     return(
         <>
          <Header />
