@@ -22,7 +22,7 @@ import updateUserInfoController from '../Controllers/updateUserInfoController.js
 
 export const router = express.Router();
 
-
+ 
 //Product related endpoints
 router.get('/products', getProductController);
 
