@@ -1,12 +1,8 @@
-import jsonWebToken from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
 
-export default async function generateTokenMiddleware(req, res, next){
-    try{
-
-    }catch(error){
-        return res.status(500).json({message: error.message})
-    }
+export default async function generateTokenMiddleware(user) {
+    return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '7m' })
 }
