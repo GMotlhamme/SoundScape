@@ -17,8 +17,7 @@ export default async function registerUserController(req, res) {
         if (userExists.rows.length > 0) {
             return res.status(400).json({ message: "User already exists" });
         }
-
-        const hashedPassword = await bcrypt.hash(`${password}`, 10);//hash password with bcrypt
+        const hashedPassword = await bcrypt.hash(password.toString(), 10);//hash password with bcrypt
         const registerUserQuery = "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)";
         await client.query(registerUserQuery, [username, email, hashedPassword]);
         res.json({ message: "User registered successfully" })
