@@ -1,5 +1,5 @@
 import express from 'express';
-import getProductController from '../Controllers/getProductController.js';
+import getProductsController from '../Controllers/getProductsController.js';
 import getSingleProductController from '../Controllers/getSingleProductController.js';
 import searchController from '../Controllers/searchController.js';
 import categoriesController from '../Controllers/categoriesController.js';
@@ -24,7 +24,7 @@ export const router = express.Router();
 
  
 //Product related endpoints
-router.get('/products', getProductController);
+router.get('/products', getProductsController);
 
 router.get('/products/:id', getSingleProductController);
 
