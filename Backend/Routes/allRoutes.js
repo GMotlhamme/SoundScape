@@ -18,13 +18,16 @@ import logoutUserController from '../Controllers/logoutUserController.js';
 import getUserProfileController from '../Controllers/getUserProfileController.js';
 import getOrderHistoryController from '../Controllers/getOrderHistoryController.js';
 import updateUserInfoController from '../Controllers/updateUserInfoController.js';
-
-
+import storeProductsController from '../Controllers/storeProductsController.js';
+import authenticateTokenMiddleware from '../Middleware/authenticateTokenMiddleware.js';
+import multer from 'multer';
 export const router = express.Router();
-
+export const multerUpload = multer({ dest: 'multerUploads/' });
  
-//Product related endpoints
+//Product related endpoints 
 router.get('/products', getProductsController);
+
+router.post('/products', authenticateTokenMiddleware, multerUpload.array('photos'), storeProductsController);
 
 router.get('/products/:id', getSingleProductController);
 

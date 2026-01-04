@@ -10,6 +10,7 @@ import WishList from "./pages/WishList";
 import Community from "./pages/Community";
 import ProductCategory from "./pages/ProductCategory";
 import Register from "./pages/Register";
+import UploadProduct from "./pages/UploadProduct";
 function App() {
   return (
     <>
@@ -22,6 +23,7 @@ function App() {
       <Route path="/Profile" element={<Profile/>}/>
       <Route path="/Checkout" element={<Checkout/>}/>
       <Route path="/Products" element={<Products/>}/>
+      <Route path="/UploadProducts" element={<UploadProduct/>}/>
       <Route path="/ProductCategory" element={<ProductCategory/>}/>
       <Route path="/SingleProduct" element={<SingleProductPage/>}/>
       <Route path="/Support" element={<Support/>}/>
