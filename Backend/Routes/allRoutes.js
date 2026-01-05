@@ -31,24 +31,22 @@ router.post('/products', authenticateTokenMiddleware, multerUpload.array('photos
 
 router.get('/products/:id', getSingleProductController);
 
-router.get('/search', searchController);
+router.get('/search/:query', searchController);
 
-router.get('/categories', categoriesController);
+router.get('/categories/:category', categoriesController);
 
 //Cart and wishlist endpoints
-router.get('/cart', getUserCartController);
-router.get('/wishlist', getUserWishlistController);
+router.get('/cart', authenticateTokenMiddleware, getUserCartController);
+router.get('/wishlist', authenticateTokenMiddleware, getUserWishlistController);
 
-router.post('/cart/items', storeCartItemsController);
-router.post('/wishlist/items', storeWishlistItemsController);
+router.post('/cart/items', authenticateTokenMiddleware, storeCartItemsController);
+router.post('/wishlist/items', authenticateTokenMiddleware, storeWishlistItemsController);
+router.patch('/cart/items/:itemId', authenticateTokenMiddleware, updateCartItemController);//updates item quantity
+router.patch('/wishlist/items', authenticateTokenMiddleware, updateWishlistItemsController);//updates wishlist items
 
-router.patch('/cart/items/:itemId', updateCartItemController);//updates item quantity
-router.patch('/wishlist/items', updateWishlistItemsController);//updates wishlist items
-
-router.delete('/cart/items/:itemId', removeCartItemController);
-router.delete('/wishlist/items/:itemId', removeWishlistItemController);
-
-router.post('/cart/orders', storeUserOrderController);//posting order history
+router.delete('/cart/items/:itemId', authenticateTokenMiddleware, removeCartItemController);
+router.delete('/wishlist/items/:itemId', authenticateTokenMiddleware, removeWishlistItemController);
+router.post('/cart/orders', authenticateTokenMiddleware, storeUserOrderController);//posting order history
 
 //User authentication endpoints
 router.post('/auth/register', registerUserController);
@@ -57,9 +55,9 @@ router.post('/auth/login', loginUserController);
 
 router.post('/auth/logout', logoutUserController)
 
-router.get('/auth/profile', getUserProfileController);
+router.get('/auth/profile', authenticateTokenMiddleware, getUserProfileController);
 
-router.patch('/auth/profile', updateUserInfoController);
+router.patch('/auth/profile', authenticateTokenMiddleware, updateUserInfoController);
 
 //Order related endpoints
-router.get('/orders', getOrderHistoryController);// get user order history
+router.get('/orders', authenticateTokenMiddleware, getOrderHistoryController);// get user order history
