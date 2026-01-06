@@ -21,6 +21,7 @@ import updateUserInfoController from '../Controllers/updateUserInfoController.js
 import storeProductsController from '../Controllers/storeProductsController.js';
 import authenticateTokenMiddleware from '../Middleware/authenticateTokenMiddleware.js';
 import multer from 'multer';
+import removeProductController from '../Controllers/removeProductController.js';
 export const router = express.Router();
 export const multerUpload = multer({ dest: 'multerUploads/' });
  
@@ -28,6 +29,8 @@ export const multerUpload = multer({ dest: 'multerUploads/' });
 router.get('/products', getProductsController);
 
 router.post('/products', authenticateTokenMiddleware, multerUpload.array('photos'), storeProductsController);
+
+router.delete('/products/:id', authenticateTokenMiddleware, removeProductController);
 
 router.get('/products/:id', getSingleProductController);
 
