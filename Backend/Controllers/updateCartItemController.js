@@ -1,4 +1,11 @@
 import { client } from "../index.js";
+/**
+ * Deletes a cart item from the checkout table.
+ * Requires the checkout_id and user_id as parameters in the request body.
+ * If the checkout_id or user_id is missing, it returns a 400 status code with an error message.
+ * If the cart item is successfully deleted, it returns a 200 status code with a success message.
+ * If there is an error, it returns a 500 status code with an error message.
+ */
 export default async function updateCartItemController(req, res){
     try {
         const user_id = req.user.id;

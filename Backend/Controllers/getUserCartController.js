@@ -1,4 +1,9 @@
 import { client } from "../index.js";
+/**
+ * Retrieves the user's cart items.
+ * Returns a JSON object with a message and a list of cart items.
+ * If there is an error, returns a 500 status code with the error message.
+ */
 export default async function getUserCartController(req, res){
     try {
         const user_id = req.user.id;
