@@ -47,7 +47,7 @@ router.get('/wishlist', authenticateTokenMiddleware, getUserWishlistController);
 
 router.post('/cart/items', authenticateTokenMiddleware, storeCartItemsController);
 router.post('/wishlist/items', authenticateTokenMiddleware, storeWishlistItemsController);
-router.patch('/cart/items/:itemId', authenticateTokenMiddleware, updateCartItemController);//updates item quantity
+router.patch('/cart/items', authenticateTokenMiddleware, updateCartItemController);//updates item quantity
 router.patch('/wishlist/items', authenticateTokenMiddleware, updateWishlistItemsController);//updates wishlist items
 
 router.delete('/cart/items/:itemId', authenticateTokenMiddleware, removeCartItemController);
