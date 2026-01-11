@@ -1,6 +1,16 @@
 
 import { client } from "../index.js";
 import { uploadImagesToCloudinary } from '../Utils/cloudinary.js';
+/**
+ * Stores a product in the database.
+ * The function takes the product details and images from the request body and files respectively.
+ * It uploads the images to Cloudinary and stores the image URLs as a JSON string in the database.
+ * If the product is successfully stored, it returns a 201 status code with a message saying "Product stored" and the uploaded image URLs.
+ * If there is an error, it returns a 500 status code with the error message.
+ * @param {Object} req - The request object containing the product details and images.
+ * @param {Object} res - The response object to send the response back to the client.
+ * @returns {Promise<Object>} - A promise that resolves to the response object.
+ */
 export default async function storeProductsController(req, res) {
     try {
         const productFiles = req.files || []; // multer sets req.files when using upload.array()
