@@ -50,8 +50,8 @@ router.post('/wishlist/items', authenticateTokenMiddleware, storeWishlistItemsCo
 router.patch('/cart/items', authenticateTokenMiddleware, updateCartItemController);//updates item quantity
 router.patch('/wishlist/items', authenticateTokenMiddleware, updateWishlistItemsController);//updates wishlist items
 
-router.delete('/cart/items/:itemId', authenticateTokenMiddleware, removeCartItemController);
-router.delete('/wishlist/items/:itemId', authenticateTokenMiddleware, removeWishlistItemController);
+router.delete('/cart/items', authenticateTokenMiddleware, removeCartItemController);
+router.delete('/wishlist/items', authenticateTokenMiddleware, removeWishlistItemController);
 router.post('/cart/orders', authenticateTokenMiddleware, storeUserOrderController);//posting order history
 
 //User authentication endpoints

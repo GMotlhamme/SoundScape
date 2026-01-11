@@ -1,3 +1,11 @@
+import { client } from "../index.js";
+/**
+ * Stores a product in the wishlist table.
+ * Requires the product_id and user_id as parameters in the request body.
+ * If the product_id or user_id is missing, it returns a 400 status code with an error message.
+ * If there is an error storing the product, it returns a 500 status code with an error message.
+ * If successful, it returns a 200 status code with a success message.
+ */
 export default async function storeWishlistItemsController(req, res){
       try {
             const user_id = req.user.id; 
