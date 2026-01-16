@@ -5,5 +5,5 @@ dotenv.config();
  * Generates a refresh token for the given user
  */
 export default function refreshTokenMiddleware(user) {
-    jwt.sign(user, process.env.JWT_REFRESH_SECRET)
+    return jwt.sign(user, process.env.JWT_REFRESH_SECRET, { expiresIn: '2d' } );
 }
