@@ -59,7 +59,7 @@ router.post('/auth/register', registerUserController);
 
 router.post('/auth/login', loginUserController);
 
-router.post('/auth/logout', logoutUserController)
+router.post('/auth/logout', logoutUserController);
 
 router.get('/auth/profile', authenticateTokenMiddleware, getUserProfileController);
 
