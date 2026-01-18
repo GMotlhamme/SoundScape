@@ -1,4 +1,3 @@
-// Create new file: src/components/ProtectedRoute.tsx
 import { Navigate } from "react-router";
 import { useEffect, useState, type JSX } from "react";
 
