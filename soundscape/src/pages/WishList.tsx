@@ -12,8 +12,7 @@ import type { ProductInformation } from "@/types/systemTypes"
  * The component also renders the Header and Footer components.
  */
 export default function WishList() {
-    const [wishlistItems, setWishlistItems] = useState<[]>()
-
+    const [wishlistItems, setWishlistItems] = useState<[]>();
     useEffect(() => {
         try {
             const retrieveFromLocalStorage = localStorage.getItem("WishListItem")
