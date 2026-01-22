@@ -22,16 +22,18 @@ export default async function storeProductsController(req, res) {
         const images = JSON.stringify(uploadedImages); // Store as JSON string
         
         const user_id = req.user && req.user.id; 
+        if (!user_id) {
+            return res.status(401).json({ message: "Unauthorized: User ID not found" });
+        }
         if (!name || !brand || !description || !category || !price || uploadedImages.length === 0) {
             return res.status(400).json({ message: "All fields are required including at least one image." });
         }
 
-        const insertProductQuery = 'INSERT INTO products (brand, category, name, description, user_id, price, images) VALUES ($1, $2, $3, $4, $5, $6, $7)';
-        await client.query(insertProductQuery, [brand, category, name, description, user_id, price, images]);
+        const insertProductQuery = 'INSERT INTO products (brand, category, name, description, price, images) VALUES ($1, $2, $3, $4, $5, $6)';
+        await client.query(insertProductQuery, [brand, category, name, description, price, images]);
         return res.status(201).json({ message: 'Product stored', images: uploadedImages });
     } catch (error) {
-        console.log("Error storing product", error);
-        return res.json({ message: "Error storing product", error: error.message });
+        return res.status(500).json({ message: "Error storing product", error: error.message });
     }
 
 }
