@@ -66,8 +66,8 @@ export default function Home() {
         <section className="flex justify-center gap-0.5 w-full text-lg text-white">
           {products.map((product: string, index: number) => (
             // <section className="h-24 w-20 cursor-pointer">
-              <Link to={`/ProductCategory`} state={product}>
-                <button key={index} className="bg-[#660708] w-75 py-10 cursor-pointer transition delay-150 duration-300 hover:bg-[#A4161A]">{product}</button>
+              <Link key={index} to={`/ProductCategory`} state={product}>
+                <button  className="bg-[#660708] w-75 py-10 cursor-pointer transition delay-150 duration-300 hover:bg-[#A4161A]">{product}</button>
               </Link>
             // </section>
             

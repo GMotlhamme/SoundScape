@@ -8,7 +8,7 @@ interface Product {
     brand: string;
     description?: string;
     price: number;
-    image?: string;
+    images?: string[];
 }
 /**
  * A page that displays a single product
@@ -107,14 +107,14 @@ export default function SingleProductPage() {
     return (
         <>
             <Header />
-            <section className="flex h-screen p-8 gap-16 mt-32">
+            <section className="flex min-h-screen p-8 gap-4 mt-32">
                 {location.state &&
-                    <section className="flex flex-col gap-8 min-h-150 ">
+                    <section className="flex flex-col gap-8 min-h-150 h-max w-190">
 
                         <h1 className="text-5xl">{singleProduct.name}</h1>
                         <p>{singleProduct.brand}</p>
                         <p className="w-160">{singleProduct.description || "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo eos est cumque facilis, facere totam at blanditiis asperiores quam aspernatur molestiae nulla autem rerum reprehenderit corrupti nesciunt itaque iusto. Vero."}</p>
-                        <p>color</p>
+                        {/* <p>color</p> */}
                         <div className="flex flex-col gap-4">
                             <h2 className="text-3xl">R{singleProduct.price}</h2>
                             <div className="flex gap-2">
@@ -135,8 +135,8 @@ export default function SingleProductPage() {
                     </section>
                 }
 
-                <section className="border border-[#B1A7A6] h-150 w-180">
-
+                <section className="border border-[#B1A7A6] h-140 w-180 cursor-cell">
+                    <img className="object-cover h-full w-full" src={singleProduct.images && singleProduct.images.length > 0 ? singleProduct.images[0] : ""} alt="" />
                 </section>
             </section>
             <Footer />

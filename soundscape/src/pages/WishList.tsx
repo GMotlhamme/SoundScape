@@ -12,8 +12,7 @@ import type { ProductInformation } from "@/types/systemTypes"
  * The component also renders the Header and Footer components.
  */
 export default function WishList() {
-    const [wishlistItems, setWishlistItems] = useState<[]>()
-
+    const [wishlistItems, setWishlistItems] = useState<[]>();
     useEffect(() => {
         try {
             const retrieveFromLocalStorage = localStorage.getItem("WishListItem")
@@ -55,7 +54,7 @@ export default function WishList() {
                             wishlistItems.map((item: ProductInformation, index: number) => (
                                 <section key={index} className="w-max border border-gray-300 rounded cursor-pointer p-4 flex flex-col items-start">
                                     <div className="bg-white border border-gray-300 rounded w-38 h-38 mb-4">
-                                        <img className="object-cover " src={item.image?.[0]} alt={item.name} />
+                                        <img className="object-cover " src={item.images?.[0]} alt={item.name} />
                                     </div>
                                     <div className="flex justify-between w-full">
                                         <div>
