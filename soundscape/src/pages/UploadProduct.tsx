@@ -1,10 +1,13 @@
 import axios from "axios"
+import { useState } from "react";
 
 export default function UploadProduct() {
-    
+    const [loading, setLoading] = useState<boolean>(false);
+
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 
         e.preventDefault();
+        setLoading(true);
         const form = e.currentTarget;
         const formData = new FormData(form);
 
@@ -13,6 +16,8 @@ export default function UploadProduct() {
 
             const result = await axios.post('http://localhost:4000/api/products', formData);
             console.log(result);
+            setLoading(false);
+            form.reset();
         } catch (error) {
             console.log(error);
         }
@@ -21,28 +26,28 @@ export default function UploadProduct() {
     return (
         <>
             <form className="m-8 border" onSubmit={handleSubmit} encType="multipart/form-data" >
-                <input className="bg-amber-600 m-4" type="file" name="photos" id="photos" multiple />
+                <input required className="bg-amber-600 m-4" type="file" name="photos" id="photos" multiple />
                 <fieldset className=" m-4">
                     <legend >Name</legend>
-                    <input className="bg-amber-600" type="text" id="name" name="name"/>
+                    <input required className="bg-amber-600" type="text" id="name" name="name"/>
                 </fieldset>
                 <fieldset className=" m-4">
                     <legend >Brand</legend>
-                    <input className="bg-amber-600" type="text" id="brand" name="brand" />
+                    <input required className="bg-amber-600" type="text" id="brand" name="brand" />
                 </fieldset>
                 <fieldset className=" m-4">
                     <legend >Description</legend>
-                    <input className="bg-amber-600" type="text" id="description" name="description" />
+                    <input required className="bg-amber-600" type="text" id="description" name="description" />
                 </fieldset>
                 <fieldset className=" m-4">
                     <legend >Category</legend>
-                    <input className="bg-amber-600" type="text" id="category" name="category"/>
+                    <input required className="bg-amber-600" type="text" id="category" name="category"/>
                 </fieldset>
                 <fieldset className=" m-4">
                     <legend >price</legend>
-                    <input className="bg-amber-600"  type="number" id="price" name="price"/>
+                    <input required className="bg-amber-600"  type="number" id="price" name="price"/>
                 </fieldset>
-                <button className="bg-black text-white m-4 p-4">submit</button>
+                {loading ? <button type="button" className="bg-black text-white m-4 p-4">loading</button> : <button className="bg-black text-white m-4 p-4 cursor-pointer">submit</button>}
             </form>
         </>
     )

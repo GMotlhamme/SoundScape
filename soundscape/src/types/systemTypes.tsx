@@ -1,12 +1,13 @@
 // specific type definitions for the product objects
 export interface ProductInformation {
+  id?: number;
   name: string;
   brand?: string;
   price: number;
   category?: string;
   quantity?: number;
   description?: string;
-  image?: string[];
+  images?: string[];
 }
 
 // types for user orders/ past purchases

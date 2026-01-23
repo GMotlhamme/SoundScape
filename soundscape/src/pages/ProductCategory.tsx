@@ -17,7 +17,7 @@ export default function ProductCategory(){
             <section key={index} className="flex flex-col cursor-pointer justify-between p-4 text-[#2a2a2b] border border-[#B1A7A6] bg-[#F5F3F4] hover:bg-[#D3D3D3] hover:scale-101 transition delay-150 duration-300 hover:text-[#0B090A] h-144 w-max">
               <Link to="/SingleProduct" state={item}  >
               <div className="bg-white border border-[#B1A7A6] w-100 h-90 max-h-90">
-                {item.image && item.image.length > 0 && <img className="object-cover" src={item.image[0]} alt={item.name} />}
+                {item.images && item.images.length > 0 && <img className="object-cover" src={item.images[0]} alt={item.name} />}
               </div>
               <h1 className="text-4xl w-90 line-clamp-2 mb-4">{item.name}</h1>
               <p className="text-[#161A1D] mb-4">{item.brand}</p>
