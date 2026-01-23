@@ -14,7 +14,7 @@ export default function UploadProduct() {
         try {
             axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
-            const result = await axios.post('http://localhost:4000/api/products', formData);
+            const result = await axios.post(`${import.meta.env.VITE_UPLOAD_URL}`, formData);
             console.log(result);
             setLoading(false);
             form.reset();

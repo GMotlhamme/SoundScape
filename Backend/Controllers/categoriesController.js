@@ -12,9 +12,13 @@ export default async function categoriesController(req, res) {
         const offset = (page - 1) * limit;
 
         const { category } = req.params;
-        const getCategoriesQuery = 'SELECT name, price, brand, category, images FROM products WHERE category = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3';
+        const getCategoriesQuery = 'SELECT name, description, price, brand, category, images FROM products WHERE category = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3';
         const result = await client.query(getCategoriesQuery, [category, limit, offset]);
         if (result.rows.length === 0) return res.status(404).json({ message: "No products found in this category" });
+        result.rows.forEach(product => {
+            product.images = JSON.parse(product.images) || [];
+            product.price = product.price.split('$')[1];
+        });
         return res.status(200).json({ products: result.rows });
     } catch (error) {
         console.log("Error fetching categories", error);

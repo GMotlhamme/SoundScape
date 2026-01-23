@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
  * The component also renders a link to the user's profile page.
  */
 export default function AccountComponent() {
+    
     return (
         <>
             <section className="mt-30">

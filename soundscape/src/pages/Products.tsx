@@ -15,21 +15,23 @@ import axios from "axios";
 export default function Products() {
   const [storeItem, setStoreItem] = useState<ProductInformation[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+
+
   // Fetch products from the backend API
   async function fetchProducts() {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:4000/api/products');
+      const response = await axios.get(`${import.meta.env.VITE_PRODUCTS_URL}`);
       setStoreItem(response.data.products);
-      console.log(response.data.products);
       setLoading(false)
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-}
-  useEffect(()=> {
-  fetchProducts();
-},[])
+  }
+  useEffect(() => {
+    fetchProducts();
+  }, [])
 
 
 
@@ -49,13 +51,13 @@ export default function Products() {
     </section>
   )
 
-/**
- * A helper function that renders a section of products based on a given category.
- * It filters the products in the storeItem state based on the given category,
- * slices the result to only include the first 6 products, and maps
- * each product to the productCard component.
- * @param {string} category - The category to render
- */
+  /**
+   * A helper function that renders a section of products based on a given category.
+   * It filters the products in the storeItem state based on the given category,
+   * slices the result to only include the first 6 products, and maps
+   * each product to the productCard component.
+   * @param {string} category - The category to render
+   */
   const renderCategory = (category: string) =>
     storeItem.filter(i => i.category?.toLowerCase() === category.toLowerCase()).slice(0, 6).map(productCard)
 
@@ -63,10 +65,10 @@ export default function Products() {
     <>
       <Header />
 
-       <section className="flex flex-col items-end justify-end mt-28 mx-10">
+      <section className="flex flex-col items-end justify-end mt-28 mx-10">
         <div className="flex items-center gap-4 my-4 justify-end">
-          <div className="text-2xl">HeadPhones</div>
-          <Link to="/ProductCategory" state={storeItem}>
+          <div className="text-2xl">Headphones</div>
+          <Link to="/ProductCategory" state={"Headphones"}>
             <button className="p-2 px-4 focus:bg-[#D3D3D3]  border border-[#B1A7A6] cursor-pointer">Load more</button>
           </Link>
         </div>
@@ -79,7 +81,7 @@ export default function Products() {
       {renderCategory("Earphones").length > 0 && <section className="flex flex-col items-end justify-end mt-28 mx-10">
         <div className="flex items-center gap-4 my-4 justify-end">
           <div className="text-2xl">Earphones</div>
-          <Link to="/ProductCategory" state={storeItem}>
+          <Link to="/ProductCategory" state={"Earphones"}>
             <button className="p-2 px-4 focus:bg-[#D3D3D3]  border border-[#B1A7A6] cursor-pointer">Load more</button>
           </Link>
         </div>
@@ -89,10 +91,10 @@ export default function Products() {
         </div>
       </section>}
 
-      {renderCategory("Speakers").length >0 && <section className="flex flex-col items-end justify-end mt-28 mx-10">
+      {renderCategory("Speakers").length > 0 && <section className="flex flex-col items-end justify-end mt-28 mx-10">
         <div className="flex items-center gap-4 my-4 justify-end">
           <div className="text-2xl">Speakers</div>
-          <Link to="/ProductCategory" state={storeItem}>
+          <Link to="/ProductCategory" state={"Speakers"}>
             <button className="p-2 px-4 focus:bg-[#D3D3D3]  border border-[#B1A7A6] cursor-pointer">Load more</button>
           </Link>
         </div>
@@ -105,7 +107,7 @@ export default function Products() {
       {renderCategory("Instruments").length > 0 && <section className="flex flex-col items-end justify-end mt-28 mx-10">
         <div className="flex items-center gap-4 my-4 justify-end">
           <div className="text-2xl">Instruments</div>
-          <Link to="/ProductCategory" state={storeItem}>
+          <Link to="/ProductCategory" state={"Instruments"}>
             <button className="p-2 px-4 focus:bg-[#D3D3D3]  border border-[#B1A7A6] cursor-pointer">Load more</button>
           </Link>
         </div>
@@ -114,11 +116,11 @@ export default function Products() {
           {renderCategory("Instruments")}
         </div>
       </section>}
-      
-      {renderCategory("Soundbars").length > 0 &&<section className="flex flex-col items-end justify-end mt-28 mb-10 mx-10">
+
+      {renderCategory("Soundbars").length > 0 && <section className="flex flex-col items-end justify-end mt-28 mb-10 mx-10">
         <div className="flex items-center gap-4 my-4 justify-end">
           <div className="text-2xl">Soundbars</div>
-          <Link to="/ProductCategory" state={storeItem}>
+          <Link to="/ProductCategory" state={"Soundbars"}>
             <button className="p-2 px-4 focus:bg-[#D3D3D3]  border border-[#B1A7A6] cursor-pointer">Load more</button>
           </Link>
         </div>
@@ -127,7 +129,7 @@ export default function Products() {
           {renderCategory("Soundbars")}
         </div>
       </section>}
-     
+
       <Footer />
     </>
   )
