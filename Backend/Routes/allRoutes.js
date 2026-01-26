@@ -23,11 +23,14 @@ import authenticateTokenMiddleware from '../Middleware/authenticateTokenMiddlewa
 import multer from 'multer';
 import removeProductController from '../Controllers/removeProductController.js';
 import updateProductInfoController from '../Controllers/updateProductInfoController.js';
+import getTopProductsController from '../Controllers/getTopProductsController.js';
 export const router = express.Router();
 export const multerUpload = multer({ dest: 'multerUploads/' });
  
 //Product related endpoints 
 router.get('/products', getProductsController);
+
+router.get('/topProducts', getTopProductsController);
 
 router.post('/products', authenticateTokenMiddleware, multerUpload.array('photos'), storeProductsController);
 

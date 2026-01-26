@@ -7,8 +7,11 @@ import { client } from "../index.js";
 export default async function getUserWishlistController(req,res){
     try {
         const user_id = req.user && req.user.id
-        const getWishlistQuery = 'SELECT * FROM wishlist WHERE id = $1'
+        const getWishlistQuery = 'SELECT * FROM wishlist WHERE user_id = $1'
         const result = await client.query(getWishlistQuery, [user_id])
+        if(result.rows.length === 0 || !result.rows){
+            return res.status(200).json({message: "No wishlist items found"})
+        }
         return res.status(200).json({message: result.rows})
     } catch (error) {
         return res.status(500).json({"Internal Server Error": error})
