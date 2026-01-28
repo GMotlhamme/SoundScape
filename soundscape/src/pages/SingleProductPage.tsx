@@ -1,9 +1,12 @@
 import Footer from "@/components/FooterComponent";
 import Header from "@/components/HeaderComponent";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
 interface Product {
+    id?: number;
+    product_id?: number;
     name: string;
     brand: string;
     description?: string;
@@ -22,8 +25,8 @@ export default function SingleProductPage() {
     const singleProduct: Product = location.state;
     const [addedToCart, setAddedToCart] = useState<boolean>(false);
     const [addedToWishList, setAddedToWishList] = useState<boolean>(false);
-    const keyInLocalStorage = "WishListItem";
-    const rawWishListDataFromLocalStorage = localStorage.getItem(keyInLocalStorage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const WishListData: Product[] = [];
 
     /**
      * Handles adding a product to the cart
@@ -52,57 +55,44 @@ export default function SingleProductPage() {
     }
 
    
-/**
- * Handles adding a product to the wishlist
- * Retrieves the wishlist data from local storage, parses it, and adds the single product to the wishlist
- * If the wishlist data is not in local storage, it creates a new wishlist with the single product
- * If there is an error parsing the wishlist data, it logs the error and creates a new wishlist with the single product
- * Makes sure to not add duplicate items to the wishlist
- * Sets the updated wishlist data back to local storage as an Array of product(s)
- * Sets the addedToWishList state to true if the item is added successfully
- */
-    function handleToWishList() {
-        
-        let WishListData = []
 
-        if (rawWishListDataFromLocalStorage) {
-            try {
-                const parseCartData = JSON.parse(rawWishListDataFromLocalStorage);
-                WishListData = Array.isArray(parseCartData) ? parseCartData : [parseCartData];
-            } catch (error) {
-                console.error("Error parsing cart data from localStorage:", error);
-                WishListData = [];
-            }
+useEffect( () => {
+    async function fetchExistingWishListData() {
+        try {
+            
+            axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+            const existingWishListDataDB = await axios.get(`${import.meta.env.VITE_WISHLIST_URL}`);
+            if (!existingWishListDataDB.data.message) {return;}
+            const rawWishListData = existingWishListDataDB.data.wishlistItems;
+            
+            
+            const alreadyInList = rawWishListData.some((item: number | undefined) => item === singleProduct.id );
+            
+            if (alreadyInList) {
+                console.log("Item already in wishlist");
+                setAddedToWishList(true);
+                return;
+            }else{
+            WishListData.push(rawWishListData);
         }
+        } catch (error) {
+            console.error("Error fetching wishlist data:", error);
+        }
+    }
+fetchExistingWishListData();
+},[singleProduct, WishListData]);
 
-        //making sure to not add duplicate items to the wishlist
-        const alreadyInList = WishListData.some(item => item.name === singleProduct.name);
-        if (alreadyInList) {
-            console.log("Item already in wishlist");
-            setAddedToWishList(true);
-            return;
-        }
-        WishListData.push(singleProduct);
+
+async function handleToWishList() {
+    try {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        await axios.post(`${import.meta.env.VITE_STORE_WISHLIST_URL}`, { id: singleProduct.id });
         setAddedToWishList(true);
-        localStorage.setItem(keyInLocalStorage, JSON.stringify(WishListData));
-
+    } catch (error) {
+        console.error("Error adding item to wishlist:", error);
     }
 
-    // checking if the item is already in the wishlist and setting the state accordingly on arrival
-    useEffect(() => {
-        if (rawWishListDataFromLocalStorage) {
-            try {
-                const parseWishListData = JSON.parse(rawWishListDataFromLocalStorage);
-                const wishListDataArray = Array.isArray(parseWishListData) ? parseWishListData : [parseWishListData];
-                const isInWishList = wishListDataArray.some((item: Product) => item.name === singleProduct.name);
-                if(isInWishList){
-                    setAddedToWishList(true);
-                }
-            } catch (error) {
-                console.error("Error parsing wishlist data from localStorage:", error);
-            }}
-    }, [rawWishListDataFromLocalStorage, singleProduct.name]);
-
+}
     
     return (
         <>
@@ -114,7 +104,6 @@ export default function SingleProductPage() {
                         <h1 className="text-5xl">{singleProduct.name}</h1>
                         <p>{singleProduct.brand}</p>
                         <p className="w-160">{singleProduct.description || "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo eos est cumque facilis, facere totam at blanditiis asperiores quam aspernatur molestiae nulla autem rerum reprehenderit corrupti nesciunt itaque iusto. Vero."}</p>
-                        {/* <p>color</p> */}
                         <div className="flex flex-col gap-4">
                             <h2 className="text-3xl">R{singleProduct.price}</h2>
                             <div className="flex gap-2">

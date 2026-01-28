@@ -17,7 +17,7 @@ export default function ProductCategory(){
         try {
           const result = await axios.get(`${import.meta.env.VITE_PRODUCTS_CATEGORY_URL}${storeItem}`)
           setProductCategory(result.data.products)
-          console.log(result.data);
+          
           
         } catch (error) {
           console.error("Error fetching products by category:", error);

@@ -2,6 +2,7 @@ import Footer from "@/components/FooterComponent"
 import Header from "@/components/HeaderComponent"
 import { useEffect, useState } from "react"
 import type { ProductInformation } from "@/types/systemTypes"
+import axios from "axios";
 
 
 /**
@@ -12,12 +13,35 @@ import type { ProductInformation } from "@/types/systemTypes"
  * The component also renders the Header and Footer components.
  */
 export default function WishList() {
-    const [wishlistItems, setWishlistItems] = useState<[]>();
+    const [wishlistItems, setWishlistItems] = useState<ProductInformation[]>([]);
+
+
+    async function fetchWishlistItems() {
+        try {
+            axios.defaults.headers.common['Authorization']= `Bearer ${localStorage.getItem("token")}`;
+            const response = await axios.get(`${import.meta.env.VITE_WISHLIST_URL}`);
+            if (!response.data.wishlistItems) {
+                setWishlistItems([]);
+                return;
+            }
+            const itemsArray = [];
+            for (const item of response.data.wishlistItems){
+               const result = await axios.get(`${import.meta.env.VITE_SINGLE_PRODUCT_URL}${item}`)
+               itemsArray.push(result.data.product);
+            }
+            setWishlistItems(itemsArray);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
+    
+
+    
     useEffect(() => {
         try {
-            const retrieveFromLocalStorage = localStorage.getItem("WishListItem")
-            const parseItems = retrieveFromLocalStorage ? JSON.parse(retrieveFromLocalStorage) : []
-            setWishlistItems(parseItems)
+            fetchWishlistItems()
         } catch {
             setWishlistItems([])
         }
@@ -58,7 +82,7 @@ export default function WishList() {
                                     </div>
                                     <div className="flex justify-between w-full">
                                         <div>
-                                            <p className="line-clamp-1">{item.name}</p>
+                                            <p className="line-clamp-1 w-34">{item.name}</p>
                                             <p className="font-bold">R{item.price}</p>
                                         </div>
                                         <i onClick={() => RemoveItem(index)} className="bi bi-x-circle text-xl  text-[#A4161A] cursor-pointer"></i>
