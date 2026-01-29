@@ -1,4 +1,5 @@
 import { client } from "../index.js";
+import convertProductData from "../Utils/converter.js";
 /**
  * Retrieves all products from a given category.
  * Returns a JSON object with a message and a list of products.
@@ -16,8 +17,7 @@ export default async function categoriesController(req, res) {
         const result = await client.query(getCategoriesQuery, [category, limit, offset]);
         if (result.rows.length === 0) return res.status(404).json({ message: "No products found in this category" });
         result.rows.forEach(product => {
-            product.images = JSON.parse(product.images) || [];
-            product.price = product.price.split('$')[1];
+            convertProductData(product);
         });
         return res.status(200).json({ products: result.rows });
     } catch (error) {

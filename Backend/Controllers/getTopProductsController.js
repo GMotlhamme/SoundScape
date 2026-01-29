@@ -1,4 +1,5 @@
 import { client } from "../index.js";
+import convertProductData from "../Utils/converter.js";
 
 export default async function getTopProductsController(req, res) {
     try{
@@ -7,14 +8,7 @@ export default async function getTopProductsController(req, res) {
         if (result.rows.length === 0)return res.status(404).json({ message: "No products found" });
         // convert images from string to array
         result.rows.forEach(product => {
-            if (product.images) {
-                product.images = JSON.parse(product.images);
-            }
-        })
-        result.rows.forEach(product => {
-            if (product.price) {
-                product.price = product.price.split("$")[1];
-            }
+            convertProductData(product);
         })
 
         return res.status(200).json({ products: result.rows });

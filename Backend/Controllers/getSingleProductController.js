@@ -1,4 +1,5 @@
 import { client } from "../index.js";
+import convertProductData from "../Utils/converter.js";
 /**
  * Retrieves a single product by its ID.
  * Returns a JSON object with the product data if found, and a 404 status code with a message saying "Product not found" if not found.
@@ -11,14 +12,7 @@ export default async function getSingleProductController(req, res) {
         const result = await client.query(getSingleProductQuery, [id]);
         if (result.rows.length === 0) return res.status(404).json({ message: "Product not found" });
         result.rows.forEach(product => {
-            if (product.images) {
-                product.images = JSON.parse(product.images);
-            }
-        })
-        result.rows.forEach(product => {
-            if (product.price) {
-                product.price = product.price.split("$")[1];
-            }
+            convertProductData(product);
         })
         const wishlistItems = result.rows.map(item => item.id);
         //convert the values in the array from string to integer
