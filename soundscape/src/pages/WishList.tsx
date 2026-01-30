@@ -24,12 +24,12 @@ export default function WishList() {
                 setWishlistItems([]);
                 return;
             }
-            const itemsArray = [];
+            else{const itemsArray = [];
             for (const item of response.data.wishlistItems){
                const result = await axios.get(`${import.meta.env.VITE_SINGLE_PRODUCT_URL}${item}`)
                itemsArray.push(result.data.product);
             }
-            setWishlistItems(itemsArray);
+            setWishlistItems(itemsArray);}
 
         } catch (error) {
             console.error(error);
@@ -53,12 +53,20 @@ export default function WishList() {
      * Retrieves the wishlist items from local storage, removes the item at the given index, and updates the local storage and state.
      * @param {number} indexOfItem - the index of the item to remove
      */
-    function RemoveItem(indexOfItem: number) {
-        const retrieveFromLocalStorage = localStorage.getItem("WishListItem")
-        const parseItems = retrieveFromLocalStorage ? JSON.parse(retrieveFromLocalStorage) : []
-        parseItems.splice(indexOfItem, 1) //where to start and how many to delete
-        localStorage.setItem("WishListItem", JSON.stringify(parseItems))
-        setWishlistItems(parseItems)
+    async function RemoveItem(indexOfItem: number) {
+        try{
+        const updatedWishlist = wishlistItems.filter((_, index) => index !== indexOfItem);
+        const itemIds = updatedWishlist.map(item=> item.id)
+        for (const item of itemIds){
+        
+        axios.defaults.headers.common['Authorization']= `Bearer ${localStorage.getItem("token")}`;
+         await axios.patch(`${import.meta.env.VITE_UPDATE_WISHLIST_URL}`, {id: item})
+        }
+        setWishlistItems(updatedWishlist);
+            
+    }catch(error){
+            console.error(error);
+        }
     }
 
 
