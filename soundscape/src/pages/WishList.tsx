@@ -3,6 +3,7 @@ import Header from "@/components/HeaderComponent"
 import { useEffect, useState } from "react"
 import type { ProductInformation } from "@/types/systemTypes"
 import axios from "axios";
+import { Link } from "react-router";
 
 
 /**
@@ -84,7 +85,8 @@ export default function WishList() {
                     <section className="grid grid-cols-3 gap-8 text-neutral-800 w-max pr-4 ">
                         {wishlistItems && wishlistItems?.length > 0 ?
                             wishlistItems.map((item: ProductInformation, index: number) => (
-                                <section key={index} className="w-max border border-gray-300 rounded cursor-pointer p-4 flex flex-col items-start">
+                                <Link to="/SingleProduct" state={item}>
+                                <section key={item.id} className="w-max border border-gray-300 rounded cursor-pointer p-4 flex flex-col items-start">
                                     <div className="bg-white border border-gray-300 rounded w-38 h-38 mb-4">
                                         <img className="object-cover " src={item.images?.[0]} alt={item.name} />
                                     </div>
@@ -96,6 +98,7 @@ export default function WishList() {
                                         <i onClick={() => RemoveItem(index)} className="bi bi-x-circle text-xl  text-[#A4161A] cursor-pointer"></i>
                                     </div>
                                 </section>
+                                </Link>
 
                             ))
                             : "Nothing in your sights"}
