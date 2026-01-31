@@ -3,6 +3,7 @@ import ProductTotalPriceComponent from "@/components/checkoutComponents/ProductT
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import type { ProductInformation } from "@/types/systemTypes";
+import axios from "axios";
 
 
 /**
@@ -18,42 +19,68 @@ import type { ProductInformation } from "@/types/systemTypes";
  * The component is connected to the state and will re-render when the state changes.
  */
 export default function Checkout() {
-    const [shipping, setShipping] = useState<string>("Pick Up in Store");
+    const [shipping, setShipping] = useState<boolean>(false);
     const [cartItems, setCartItems] = useState<ProductInformation[]>([]);
     const navigate = useNavigate();
-    
+
 
     function toHome() {
         navigate("/")
     }
+    async function fetchCartItems() {
+        try {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
+            const response = await axios.get(`${import.meta.env.VITE_CART_URL}`);
 
-    useEffect(()=> {
-        const cartItemsFromLocalStorage = localStorage.getItem("cartItem");
-        if(!cartItemsFromLocalStorage){
-           return setCartItems([])
-        } else {
-            const parsedItems = JSON.parse(cartItemsFromLocalStorage);
-            setCartItems(parsedItems);
+            if (!response.data.itemIds) {
+                setCartItems([]);
+                return;
+            } else {
+                const itemsArray = [];
+                for (const item of response.data.itemIds) {
+                    const result = await axios.get(`${import.meta.env.VITE_SINGLE_PRODUCT_URL}${item}`)
+                    itemsArray.push(result.data.product);
+                }
+                setCartItems(itemsArray);
+            }
+        } catch (error) {
+            console.log(error);
+
         }
-    },[])
-    console.log(cartItems);
-
-/**
- * Removes an item from the cart based on its index
- * @param {number} indexToRemove - the index of the item to remove
- * Updates the cartItems state and local storage
- * The underscore (_) is used to ignore the first parameter of the filter callback function, which is the current item being processed
- */
-    function removeItemFromCart(indexToRemove: number){
-        const updated = cartItems.filter((_, index) => index !== indexToRemove);
-    setCartItems(updated);
-    localStorage.setItem("cartItem", JSON.stringify(updated));
     }
-      function payNow(){
+
+    useEffect(() => {
+        try {
+            fetchCartItems()
+        } catch (error) {
+            console.error(error);
+            setCartItems([])
+        }
+    }, [])
+
+    /**
+     * Removes an item from the cart based on its index
+     * @param {number} indexToRemove - the index of the item to remove
+     * Updates the cartItems state and local storage
+     * The underscore (_) is used to ignore the first parameter of the filter callback function, which is the current item being processed
+     */
+    function removeItemFromCart(indexToRemove: number) {
+        const updated = cartItems.filter((_, index) => index !== indexToRemove);
+        const itemIds = updated.map(item => item.id)
+        for (const item of itemIds) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
+            axios.patch(`${import.meta.env.VITE_UPDATE_CART_URL}`, { id: item })
+        }
+        setCartItems(updated);
+
+    }
+
+
+    function payNow() {
         setCartItems([]);
         localStorage.removeItem("cartItem");
         navigate("/");
-      }
+    }
 
     return (
         <>
@@ -68,14 +95,14 @@ export default function Checkout() {
 
                     </div>
                     <section className="flex flex-col gap-4">
-                        {cartItems.length > 0 ? 
-                        cartItems.map((product: ProductInformation,index) => (
-                        <ProductMiniCardComponent 
-                        key={index}
-                        removeItemFromCart={()=> removeItemFromCart(index)}
-                        cartItems={product}
-                        /> ))
-                        : (<p>Your cart is empty</p>)}
+                        {cartItems.length > 0 ?
+                            cartItems.map((product: ProductInformation, index) => (
+                                <ProductMiniCardComponent
+                                    key={index}
+                                    removeItemFromCart={() => removeItemFromCart(index)}
+                                    cartItems={product}
+                                />))
+                            : (<p>Your cart is empty</p>)}
                     </section>
                 </section>
 
@@ -85,13 +112,13 @@ export default function Checkout() {
                         <h1 className="text-4xl mb-4">Shipping</h1>
                         <section className="flex transition delay-150 duration-300 my-4">
 
-                            {shipping === "Delivery" ? <button className="rounded-l border text-white p-2 px-12 bg-[#4b4b4b] cursor-pointer">Delivery</button>
-                                : <button onClick={() => setShipping("Delivery")} className="rounded-l border bg-white p-2 px-12 focus:bg-[#4b4b4b] cursor-pointer">Delivery</button>}
+                            {shipping ? <button className="rounded-l border text-white p-2 px-12 bg-[#4b4b4b] cursor-pointer">Delivery</button>
+                                : <button onClick={() => setShipping(true)} className="rounded-l border bg-white p-2 px-12 focus:bg-[#4b4b4b] cursor-pointer">Delivery</button>}
 
-                            {shipping === "Pick Up in Store" ? <button className="rounded-r text-white border p-2 px-6 bg-[#4b4b4b] cursor-pointer">Pick Up in Store</button> :
-                                <button onClick={() => setShipping("Pick Up in Store")} className="rounded-r border bg-white p-2 px-6 focus:bg-[#4b4b4b] cursor-pointer">Pick Up in Store</button>}
+                            {!shipping ? <button className="rounded-r text-white border p-2 px-6 bg-[#4b4b4b] cursor-pointer">Pick Up in Store</button> :
+                                <button onClick={() => setShipping(false)} className="rounded-r border bg-white p-2 px-6 focus:bg-[#4b4b4b] cursor-pointer">Pick Up in Store</button>}
                         </section>
-                        {shipping === "Delivery" && <address className="flex flex-col gap-2">
+                        {shipping && <address className="flex flex-col gap-2">
                             <fieldset className="flex gap-4 w-full">
                                 <div className="w-full">
                                     <p>First Name</p>
@@ -149,8 +176,8 @@ export default function Checkout() {
                             <input type="text" className="rounded border p-2 bg-white" placeholder="Name on card" />
                             <ProductTotalPriceComponent
                                 shipping={shipping}
-                                productsInCart={cartItems}
-                                
+                                productsInCart={cartItems.map(item => ({ ...item, price: String(item.price) }))}
+
                             />
                             <button onClick={payNow} className="w-full p-2 text-white rounded bg-[#2105d9] cursor-pointer">Pay</button>
                         </form>

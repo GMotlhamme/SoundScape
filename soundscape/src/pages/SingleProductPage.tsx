@@ -25,38 +25,56 @@ export default function SingleProductPage() {
     const singleProduct: Product = location.state;
     const [addedToCart, setAddedToCart] = useState<boolean>(false);
     const [addedToWishList, setAddedToWishList] = useState<boolean>(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const WishListData: Product[] = [];
+    
+    
 
     /**
      * Handles adding a product to the cart
-     * Retrieves the cart data from local storage, parses it, and adds the single product to the cart
-     * If the cart data is not in local storage, it creates a new cart with the single product
+     * Retrieves the cart data from the database, parses it, and adds the single product to the cart
+     * If the cart data is not in the DB, it creates a new cart with the single product
      * If there is an error parsing the cart data, it logs the error and creates a new cart with the single product
-     * Sets the updated cart data back to local storage as an Array of product(s)
+     * Sets the updated cart data back to the DB as an Array of product(s)
      */
-    function handleAddToCart() {
-        const keyInLocalStorage = "cartItem";
-        const rawCartDataFromLocalStorage = localStorage.getItem(keyInLocalStorage);
-        let cartData: Product[] = [];
-
-        if (rawCartDataFromLocalStorage) {
+    async function handleAddToCart() {
             try {
-                const parseCartData = JSON.parse(rawCartDataFromLocalStorage);
-                cartData = Array.isArray(parseCartData) ? parseCartData : [parseCartData];
+                axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+                const existingCartDataDB = await axios.post(`${import.meta.env.VITE_STORE_IN_CART_URL}`, { id: singleProduct.id });
+                if (!existingCartDataDB.data.message) {return;}
+                setAddedToCart(true);
             } catch (error) {
-                console.error("Error parsing cart data from localStorage:", error);
-                cartData = [];
+                console.error("Error adding product to cart:", error);
+                
             }
         }
-        cartData.push(singleProduct);
-        localStorage.setItem(keyInLocalStorage, JSON.stringify(cartData));
-        setAddedToCart(true);
-    }
-
+        
+    
    
 
 useEffect( () => {
+    if (!singleProduct) return;
+    const WishListData: Product[] = [];
+    const cartData: Product[] = [];
+async function fetchExistingCartData() {
+    try {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        const existingCartDataDB = await axios.get(`${import.meta.env.VITE_CART_URL}`);
+        if (!existingCartDataDB.data.items) {return;}
+        const rawCartData = existingCartDataDB.data.itemIds;
+
+        
+        const alreadyInCart = rawCartData.some((item: number | undefined) => item === singleProduct.id );
+        
+        if (alreadyInCart) {
+            console.log("Item already in cart");
+            setAddedToCart(true);
+        }else{
+        cartData.push(rawCartData);
+        }
+    } catch (error) {
+        console.error("Error fetching existing cart items",error);
+        
+    }
+}
     async function fetchExistingWishListData() {
         try {
             
@@ -71,7 +89,6 @@ useEffect( () => {
             if (alreadyInList) {
                 console.log("Item already in wishlist");
                 setAddedToWishList(true);
-                return;
             }else{
             WishListData.push(rawWishListData);
         }
@@ -79,8 +96,9 @@ useEffect( () => {
             console.error("Error fetching wishlist data:", error);
         }
     }
-fetchExistingWishListData();
-},[singleProduct, WishListData]);
+    fetchExistingCartData();
+    fetchExistingWishListData();
+},[singleProduct]);
 
 
 async function handleToWishList() {

@@ -43,7 +43,7 @@ useEffect(()=>{
       <section className="h-screen min-h-min  bg-[#F5F3F4]">
         <Header />
         {/* <div className="bg-[url('/SoundEscape.png')] h-60 flex justify-center p-18 mt-36 mx-16 bg-contain bg-no-repeat"></div> */}
-        <div className="bg-[url('/introSpeakers.jpg')] h-150 w-full  bg-cover bg-no-repeat"></div>
+        <div className="bg-[url(/introSpeakers.jpg)] h-150 w-full  bg-cover bg-no-repeat"></div>
 
         {/* carousel of slogans */}
         <section id="slogan_container" className="flex p-4 gap-28 bg-[#161A1D] overflow-hidden whitespace-nowrap">
