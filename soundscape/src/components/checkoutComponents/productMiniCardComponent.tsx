@@ -26,12 +26,12 @@ export default function ProductMiniCardComponent({ cartItems, removeItemFromCart
 
 
                     <div className="w-24 h-24 ">
-                        <img className="w-full h-full object-cover" src={cartItems.image?.[0]} alt={cartItems.name} />
+                        <img className="w-full h-full object-cover" src={cartItems.images?.[0]} alt={cartItems.name} />
                     </div>
                     <div className="flex flex-col justify-around px-4 w-full">
                         <div className="flex justify-between items-center w-full">
 
-                        <h3 className="flex font-semibold text-md gap-2 line-clamp-2">{cartItems.brand}   <p>- {cartItems.name}</p></h3>
+                        <h3 className="flex font-semibold text-md gap-2 line-clamp-2">{cartItems.brand} - {cartItems.name}</h3>
                          <i onClick={handleRemove} className="bi bi-x-circle  text-xl  text-[#A4161A] cursor-pointer"></i>
                         </div>
                         <div className="flex gap-4">

@@ -1,7 +1,9 @@
 import Footer from "@/components/FooterComponent";
 import Header from "@/components/HeaderComponent";
+// import { useState } from "react";
 
 export default function Community() {
+    // const [skeletonLoading, setSkeletonLoading] = useState<boolean>(false);
     const pastEvents = [
         {
             id: 1,

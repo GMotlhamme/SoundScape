@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
 import { useNavigate, type NavigateFunction } from "react-router";
 import type { ProductInformation} from "@/types/systemTypes"
+import axios from "axios";
 
 
 /**
@@ -45,12 +46,21 @@ export default function Header() {
   }
 
    useEffect(()=> {
-          const cartItemsFromLocalStorage = localStorage.getItem("cartItem");
-          if(!cartItemsFromLocalStorage){
-             return setCartItems([])
-          } else {
-              const parsedItems = JSON.parse(cartItemsFromLocalStorage);
-              setCartItems(parsedItems);
+          
+          try{
+            async function fetchCartItems() {
+              axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+              const response = await axios.get(`${import.meta.env.VITE_CART_URL}`);
+              if(!response.data.itemIds){
+                setCartItems([]);
+                return;
+              }
+              setCartItems(response.data.itemIds as ProductInformation[]);
+            }
+            fetchCartItems();
+          } catch (error) {
+              console.error("Error setting cart items:", error);
+              setCartItems([]);
           }
       },[])
 

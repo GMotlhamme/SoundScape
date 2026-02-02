@@ -1,35 +1,27 @@
 import Footer from "@/components/FooterComponent";
 import Header from "@/components/HeaderComponent";
 import type { ProductInformation } from "@/types/systemTypes";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
-
-// creating a custom type to use to specify types for the product objects 
 
 
 export default function Home() {
-  const [storeItem] = useState<ProductInformation[]>([
-    {
-      name: "Air Pods Pro",
-      brand: "Apple",
-      price: 12999.00,
-      image: ["/appleAirPodsPro.png"]
-    },
+  const [storeItem, setStoreItem] = useState<ProductInformation[]>([])
 
-    {
-      name: "FLIP 5",
-      brand: "JBL",
-      price: 5999.00,
-      image: ["/appleAirPodsPro.png"]
-    },
+useEffect(()=>{
+  async function fetchTopProducts(){
+    try {
+      axios.defaults.headers.common['Authorization']= `Bearer ${localStorage.getItem('token')}`;
+      const response = await axios.get(`${import.meta.env.VITE_TOP_PRODUCTS_URL}`);
+      setStoreItem(response.data.products);
+    } catch (error) {
+      console.error('Error fetching top products:', error);
+    }
+  }
+  fetchTopProducts();
+},[]);
 
-    {
-      name: "Quantum 2",
-      brand: "SoundCore",
-      price: 2699.00,
-      image: ["/appleAirPodsPro.png"]
-    },
-  ])
 
   const slogan: string[] = [
     "Build Your Fortress",
@@ -51,7 +43,7 @@ export default function Home() {
       <section className="h-screen min-h-min  bg-[#F5F3F4]">
         <Header />
         {/* <div className="bg-[url('/SoundEscape.png')] h-60 flex justify-center p-18 mt-36 mx-16 bg-contain bg-no-repeat"></div> */}
-        <div className="bg-[url('/introSpeakers.jpg')] h-150 w-full  bg-cover bg-no-repeat"></div>
+        <div className="bg-[url(/introSpeakers.jpg)] h-150 w-full  bg-cover bg-no-repeat"></div>
 
         {/* carousel of slogans */}
         <section id="slogan_container" className="flex p-4 gap-28 bg-[#161A1D] overflow-hidden whitespace-nowrap">
@@ -66,8 +58,8 @@ export default function Home() {
         <section className="flex justify-center gap-0.5 w-full text-lg text-white">
           {products.map((product: string, index: number) => (
             // <section className="h-24 w-20 cursor-pointer">
-              <Link to={`/ProductCategory`} state={product}>
-                <button key={index} className="bg-[#660708] w-75 py-10 cursor-pointer transition delay-150 duration-300 hover:bg-[#A4161A]">{product}</button>
+              <Link key={index} to={`/ProductCategory`} state={product}>
+                <button  className="bg-[#660708] w-75 py-10 cursor-pointer transition delay-150 duration-300 hover:bg-[#A4161A]">{product}</button>
               </Link>
             // </section>
             
@@ -81,13 +73,12 @@ export default function Home() {
               {/* navigating to the single product page with the product as state */}
               <Link to={"/SingleProduct"} state={product}>
                 <div className="bg-white border border-[#B1A7A6] w-100 h-90 max-h-90">
-                  <img className="w-full h-full" src={product.image?.[0]} alt={product.name} />
+                  <img className="object-cover w-full h-full" src={product.images?.[0]} alt={product.name} />
                 </div>
                 <div className="h-50 flex flex-col justify-between">
                   <h1 className="text-4xl w-90 line-clamp-2 mb-2">{product.name}</h1>
-                  <p className="text-[#161A1D] mb-4">{product.brand}</p>
-                  <p className="border rounded-full bg-amber-400 w-4 h-4"></p>
-                  <h1 className="text-3xl  mt-4">R {product.price}</h1>
+                  <p className="text-[#161A1D] ">{product.brand}</p>
+                  <h1 className="text-3xl mb-4">R {product.price}</h1>
                 </div>
               </Link>
             </section>
