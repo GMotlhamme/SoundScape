@@ -18,11 +18,10 @@ export default function AccountComponent() {
         username: "",
         email: ""
     });
-    //     const [editProfile, setEditProfile] = useState<[]>({
-    //     username: "",
-    //     email: "",
-    //     password: "",
-    //   });
+        const [editProfile, setEditProfile] = useState<Profile>({
+        username: "",
+        email: "",
+      });
 
     async function FetchProfile() {
         try {
@@ -39,23 +38,22 @@ export default function AccountComponent() {
     useEffect(() => {
         FetchProfile();
     }, [])
-    //     async function EditProfile() {
-    //     try {
-    //       axios.defaults.headers.common[
-    //         "Authorization"
-    //       ] = `Bearer ${localStorage.getItem("token")}`;
-    //        await axios.patch(
-    //         `${import.meta.env.VITE_USER_PROFILE_URL}`,
-    //         {
-    //           username: editProfile.username,
-    //           email: editProfile.email,
-    //           password: editProfile.password,
-    //         }
-    //       );
-    //     } catch (error) {
-    //       console.error("Error editing profile:", error);
-    //     }
-    //   }
+        async function EditProfile() {
+        try {
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${localStorage.getItem("token")}`;
+           await axios.patch(
+            `${import.meta.env.VITE_USER_PROFILE_URL}`,
+            {
+              username: editProfile.username,
+              email: editProfile.email,
+            }
+          );
+        } catch (error) {
+          console.error("Error editing profile:", error);
+        }
+      }
     return (
         <>
             <section className="mt-30">
@@ -69,25 +67,32 @@ export default function AccountComponent() {
                 <section className="flex flex-col gap-8 text-neutral-800">
                     {currentProfile &&
 
-                        <form action="">
+                        <form action={EditProfile}>
 
                             <fieldset className="border border-[#5b5a5a] px-1.5 rounded">
                                 <legend>Email</legend>
-                                <input className="pl-0 pb-2" placeholder={currentProfile.email} type="email" />
+                                <input className="pl-0 pb-2" placeholder={currentProfile.email} value={editProfile.email}
+                        onChange={(e) =>
+                          setEditProfile({ ...editProfile, email: e.target.value })} type="email" />
                             </fieldset>
+
                             <fieldset className="border border-[#5b5a5a] px-1.5 rounded">
                                 <legend>Display name</legend>
-                                <input className="pl-0 pb-2" placeholder={currentProfile.username} type="text" />
+                                <input className="pl-0 pb-2" placeholder={currentProfile.username} value={editProfile.username}
+                        onChange={(e) =>
+                          setEditProfile({ ...editProfile, username: e.target.value })} type="text" />
                             </fieldset>
+
                             <fieldset className="border border-[#5b5a5a] px-1.5 rounded">
                                 <legend>Password</legend>
-                                <input className="pl-0 pb-2" placeholder="your stuff" type="password" />
+                                <input className="pl-0 pb-2" placeholder="your stuff" value={editProfile.password}
+                         type="password" />
                             </fieldset>
+                            <button className="border border-[#5b5a5a] cursor-pointer hover:bg-[#D3D3D3] transition px-24 py-2 mt-8">Update</button>
                         </form>
                     }
 
                 </section>
-                <button className="border border-[#5b5a5a] cursor-pointer hover:bg-[#D3D3D3] transition px-24 py-2 mt-8">Update</button>
             </section>
         </>
     )
