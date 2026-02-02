@@ -1,4 +1,19 @@
 
+// interface ProductTotalPriceProps {
+//   productsInCart: Array<{ price: string }>;
+//   shipping: "Delivery" | "Pick Up in Store";
+// }
+
+ interface ProductInformation {
+  id?: number;
+  name: string;
+  brand?: string;
+  price: string;
+  category?: string;
+  quantity?: number;
+  description?: string;
+  images?: string[];
+}
 /**
  * A React component that displays the total price of all items in the cart.
  * It also displays the shipping cost and the total cost (subtotal + shipping cost).
@@ -8,11 +23,12 @@
  * @param {any[]} props.productsInCart - An array of objects representing the items in the cart.
  * @param {string} props.shipping - The type of shipping ("Delivery" or "Pick Up in Store").
  */
-export default function ProductTotalPriceComponent({productsInCart, shipping}: any){
+export default function ProductTotalPriceComponent({productsInCart, shipping}: {productsInCart: ProductInformation[], shipping: boolean}) {
 
         // find all the prices in the cart items and sum them up
-        const pricesOfCartItems = productsInCart.map((item:any) => item.price)
-        let totalPrice = pricesOfCartItems.reduce((total:number, price: number) => total + price, 0);
+        const pricesOfCartItems = productsInCart.map((item) => item.price.split(",").join(""));
+        
+        let totalPrice = pricesOfCartItems.reduce((total:number, price: string) => total += parseInt(price), 0);
         
     return(
         <>
@@ -24,11 +40,11 @@ export default function ProductTotalPriceComponent({productsInCart, shipping}: a
                 </div>
                 <div className="flex justify-between font-semibold text-md ">
                     <p>Shipping</p>  
-                    <p> {shipping === "Delivery" ? (totalPrice > 500 ? "Free" : "R 100") : ("Pick Up in Store")} </p>
+                    <p> {shipping  ? (totalPrice > 500 ? "Free" : "R 100") : ("Pick Up in Store")} </p>
                 </div>
                 <div className="flex justify-between font-bold text-md ">
                     <p>Total</p>  
-                    <p>R{totalPrice && (totalPrice > 500 ? totalPrice : (totalPrice += 100))}</p>
+                    <p>R{totalPrice && (totalPrice > 50000 ? totalPrice : (totalPrice += 100))}</p>
                 </div>
                 
             </div>

@@ -12,9 +12,9 @@ export default async function updateUserInfoController(req, res){
    try {
          const user_id = req.user && req.user.id;
             if (!user_id) return res.status(401).json({ message: 'Unauthorized procedure' });
-        const { name, email, address } = req.body;
-        const updateUserQuery = 'UPDATE users SET name = $1, email = $2, address = $3 WHERE id = $4 RETURNING *';
-        const values = [name, email, address, user_id];
+        const { username, email } = req.body;
+        const updateUserQuery = 'UPDATE users SET username = $1, email = $2 WHERE id = $3 RETURNING *';
+        const values = [username, email, user_id];
         const updatedUser = await client.query(updateUserQuery, values);
         if(updatedUser.rows.length === 0 )return res.status(404).json({ message: 'User not found' });
         return res.status(200).json({ message: 'User information updated successfully', user: updatedUser.rows[0] });

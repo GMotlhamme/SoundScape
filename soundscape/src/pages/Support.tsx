@@ -25,7 +25,7 @@ export default function Support(){
         
         <section className="bg-[#D3D3D3] dark:bg-zinc-900  p-8 col-1 row-2 md:row-1">
           <h1 className="dark:text-white text-4xl mb-7">
-            Reach out for any enquiries we could assist with and we'll get back to you
+            Reach out for any enquiries we could assist you with and we'll get back to you
           </h1>
           <form  className="flex flex-col gap-5">
             <div className="grid grid-cols-1 gap-4">

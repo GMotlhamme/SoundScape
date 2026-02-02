@@ -2,6 +2,8 @@ import Footer from "@/components/FooterComponent"
 import Header from "@/components/HeaderComponent"
 import { useEffect, useState } from "react"
 import type { ProductInformation } from "@/types/systemTypes"
+import axios from "axios";
+import { Link } from "react-router";
 
 
 /**
@@ -12,12 +14,35 @@ import type { ProductInformation } from "@/types/systemTypes"
  * The component also renders the Header and Footer components.
  */
 export default function WishList() {
-    const [wishlistItems, setWishlistItems] = useState<[]>();
+    const [wishlistItems, setWishlistItems] = useState<ProductInformation[]>([]);
+
+
+    async function fetchWishlistItems() {
+        try {
+            axios.defaults.headers.common['Authorization']= `Bearer ${localStorage.getItem("token")}`;
+            const response = await axios.get(`${import.meta.env.VITE_WISHLIST_URL}`);
+            if (!response.data.wishlistItems) {
+                setWishlistItems([]);
+                return;
+            }
+            else{const itemsArray = [];
+            for (const item of response.data.wishlistItems){
+               const result = await axios.get(`${import.meta.env.VITE_SINGLE_PRODUCT_URL}${item}`)
+               itemsArray.push(result.data.product);
+            }
+            setWishlistItems(itemsArray);}
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
+    
+
+    
     useEffect(() => {
         try {
-            const retrieveFromLocalStorage = localStorage.getItem("WishListItem")
-            const parseItems = retrieveFromLocalStorage ? JSON.parse(retrieveFromLocalStorage) : []
-            setWishlistItems(parseItems)
+            fetchWishlistItems()
         } catch {
             setWishlistItems([])
         }
@@ -29,12 +54,20 @@ export default function WishList() {
      * Retrieves the wishlist items from local storage, removes the item at the given index, and updates the local storage and state.
      * @param {number} indexOfItem - the index of the item to remove
      */
-    function RemoveItem(indexOfItem: number) {
-        const retrieveFromLocalStorage = localStorage.getItem("WishListItem")
-        const parseItems = retrieveFromLocalStorage ? JSON.parse(retrieveFromLocalStorage) : []
-        parseItems.splice(indexOfItem, 1) //where to start and how many to delete
-        localStorage.setItem("WishListItem", JSON.stringify(parseItems))
-        setWishlistItems(parseItems)
+    async function RemoveItem(indexOfItem: number) {
+        try{
+        const updatedWishlist = wishlistItems.filter((_, index) => index !== indexOfItem);
+        const itemIds = updatedWishlist.map(item=> item.id)
+        for (const item of itemIds){
+        
+        axios.defaults.headers.common['Authorization']= `Bearer ${localStorage.getItem("token")}`;
+         await axios.patch(`${import.meta.env.VITE_UPDATE_WISHLIST_URL}`, {id: item})
+        }
+        setWishlistItems(updatedWishlist);
+            
+    }catch(error){
+            console.error(error);
+        }
     }
 
 
@@ -52,18 +85,20 @@ export default function WishList() {
                     <section className="grid grid-cols-3 gap-8 text-neutral-800 w-max pr-4 ">
                         {wishlistItems && wishlistItems?.length > 0 ?
                             wishlistItems.map((item: ProductInformation, index: number) => (
-                                <section key={index} className="w-max border border-gray-300 rounded cursor-pointer p-4 flex flex-col items-start">
+                                <Link to="/SingleProduct" state={item}>
+                                <section key={item.id} className="w-max border border-gray-300 rounded cursor-pointer p-4 flex flex-col items-start">
                                     <div className="bg-white border border-gray-300 rounded w-38 h-38 mb-4">
                                         <img className="object-cover " src={item.images?.[0]} alt={item.name} />
                                     </div>
                                     <div className="flex justify-between w-full">
                                         <div>
-                                            <p className="line-clamp-1">{item.name}</p>
+                                            <p className="line-clamp-1 w-34">{item.name}</p>
                                             <p className="font-bold">R{item.price}</p>
                                         </div>
                                         <i onClick={() => RemoveItem(index)} className="bi bi-x-circle text-xl  text-[#A4161A] cursor-pointer"></i>
                                     </div>
                                 </section>
+                                </Link>
 
                             ))
                             : "Nothing in your sights"}

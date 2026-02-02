@@ -7,9 +7,17 @@ import { client } from "../index.js";
 export default async function getUserWishlistController(req,res){
     try {
         const user_id = req.user && req.user.id
-        const getWishlistQuery = 'SELECT * FROM wishlist WHERE id = $1'
+        const getWishlistQuery = 'SELECT * FROM wishlist WHERE user_id = $1'
         const result = await client.query(getWishlistQuery, [user_id])
-        return res.status(200).json({message: result.rows})
+        if(result.rows.length === 0 || !result.rows){
+            return res.status(200).json({message: "No wishlist items found"})
+        }
+        const wishlistItems = result.rows.map(item => item.product_id.split(',')).flat();
+        //convert the values in the array from string to integer
+        const wishlistItemsInt = wishlistItems.map(item => parseInt(item));
+        
+        
+        return res.status(200).json({message: result.rows, wishlistItems: wishlistItemsInt})
     } catch (error) {
         return res.status(500).json({"Internal Server Error": error})
     }
