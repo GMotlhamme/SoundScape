@@ -25,7 +25,7 @@ export default function SingleProductPage() {
     const singleProduct: Product = location.state;
     const [addedToCart, setAddedToCart] = useState<boolean>(false);
     const [addedToWishList, setAddedToWishList] = useState<boolean>(false);
-    
+    const [viewedProductImage, setViewedProductImage] = useState<number>(0);
     
 
     /**
@@ -142,9 +142,21 @@ async function handleToWishList() {
                     </section>
                 }
 
-                <section className="border border-[#B1A7A6] h-140 w-180 cursor-cell">
-                    <img className="object-cover h-full w-full" src={singleProduct.images && singleProduct.images.length > 0 ? singleProduct.images[0] : ""} alt="" />
-                </section>
+                
+                {
+                    <section className="border border-[#B1A7A6] h-140 w-170 mb-58 ">
+                    <img className="object-cover h-full w-full mb-8 cursor-pointer" src={singleProduct.images && singleProduct.images.length > 0 ? singleProduct.images[viewedProductImage] : ""} alt="" />
+                
+                    {singleProduct.images && singleProduct.images.length > 1 &&
+                    <section className="flex flex-row gap-4">
+                        {singleProduct.images.map((image, index) => (
+                            <img onClick={()=> setViewedProductImage(index   )} key={index} className={`border ${index === viewedProductImage ? 'border-amber-500' : 'border-[#B1A7A6]'} object-cover h-30 w-30 cursor-pointer`} src={image} alt={`Product image ${index + 2}`} />
+                       //highlight the selected image
+
+                       ))}
+                    </section>
+            }
+                </section>}
             </section>
             <Footer />
         </>
