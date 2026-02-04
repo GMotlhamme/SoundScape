@@ -150,9 +150,8 @@ async function handleToWishList() {
                     {singleProduct.images && singleProduct.images.length > 1 &&
                     <section className="flex flex-row gap-4">
                         {singleProduct.images.map((image, index) => (
+                            //highlight the selected image
                             <img onClick={()=> setViewedProductImage(index   )} key={index} className={`border ${index === viewedProductImage ? 'border-amber-500' : 'border-[#B1A7A6]'} object-cover h-30 w-30 cursor-pointer`} src={image} alt={`Product image ${index + 2}`} />
-                       //highlight the selected image
-
                        ))}
                     </section>
             }
