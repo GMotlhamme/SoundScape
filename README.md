@@ -1,7 +1,3 @@
-Here’s a polished **README.md** draft for your application:  
-
----
-
 # 🎵 Music & Entertainment E-Commerce Platform  
 
 ## 📖 Overview  
