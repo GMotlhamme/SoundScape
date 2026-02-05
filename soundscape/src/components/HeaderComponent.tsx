@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
 import { useNavigate, type NavigateFunction } from "react-router";
-import type { ProductInformation} from "@/types/systemTypes"
+import type { ProductInformation } from "@/types/systemTypes"
 import axios from "axios";
 
 
@@ -16,6 +16,7 @@ import axios from "axios";
 export default function Header() {
   const navigate: NavigateFunction = useNavigate();
   const [cartItems, setCartItems] = useState<ProductInformation[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   //navigate to the products page
   function toProducts(): void {
@@ -45,27 +46,41 @@ export default function Header() {
     navigate("/Community")
   }
 
-   useEffect(()=> {
-          
-          try{
-            async function fetchCartItems() {
-              axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-              const response = await axios.get(`${import.meta.env.VITE_CART_URL}`);
-              if(!response.data.itemIds){
-                setCartItems([]);
-                return;
-              }
-              setCartItems(response.data.itemIds as ProductInformation[]);
-            }
-            fetchCartItems();
-          } catch (error) {
-              console.error("Error setting cart items:", error);
-              setCartItems([]);
-          }
-      },[])
+  useEffect(() => {
 
-      const numberOfItemsInCart = cartItems.length;
+    try {
+      async function fetchCartItems() {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        const response = await axios.get(`${import.meta.env.VITE_CART_URL}`);
+        if (!response.data.itemIds) {
+          setCartItems([]);
+          return;
+        }
+        setCartItems(response.data.itemIds as ProductInformation[]);
+      }
+      fetchCartItems();
+    } catch (error) {
+      console.error("Error setting cart items:", error);
+      setCartItems([]);
+    }
+  }, [])
 
+  const numberOfItemsInCart = cartItems.length;
+
+  async function handleSearch(event: React.FormEvent<HTMLFormElement>) {
+    setLoading(true);
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const searchQuery = formData.get("search") as string;
+    const result = await axios.get(`${import.meta.env.VITE_SEARCH_URL}${searchQuery}`);
+    if(result.data.products && result.data.products.length > 0){
+      setLoading(false);
+      navigate(`/SearchResults`, { state: result.data.products });
+    }
+    setLoading(false);
+    navigate(`/SearchResults`, { state: [] });
+    
+  }
   return (
     <>
       <section className="flex pl-4 fixed w-full top-0 border-b z-10 justify-between items-center  p-4 bg-[#F5F3F4]">
@@ -90,9 +105,11 @@ export default function Header() {
         </nav>
 
         <section className="flex justify-center items-center gap-4 pr-8">
-          <search className=" bg-white rounded-2xl">
-            <input placeholder="Search" className="bg-white rounded-l-2xl p-1.5 w-62" type="text" />
-            <i className="bi bi-search pr-4 pl-2 cursor-pointer"></i>
+          <search  className=" bg-white rounded-2xl">
+            <form onSubmit={handleSearch}>
+              <input placeholder="Search" name="search" className="bg-white rounded-l-2xl p-1.5 w-62" type="text" />
+              {loading ? "loading" : <button type="submit"><i className="bi bi-search pr-4 pl-2 cursor-pointer"></i></button>}
+            </form>
           </search>
           <nav className="flex gap-4">
             <button onClick={toProfile} className="cursor-pointer text-xl"><abbr title="Profile"><i className="bi bi-person-circle "></i></abbr></button>

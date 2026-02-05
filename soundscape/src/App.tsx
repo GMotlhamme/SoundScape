@@ -12,6 +12,7 @@ import ProductCategory from "./pages/ProductCategory";
 import Register from "./pages/Register";
 import UploadProduct from "./pages/UploadProduct";
 import ProtectedRoute from "./lib/ProtectedRoute";
+import SearchResults from "./pages/SearchResults";
 function App() {
   return (
     <>
@@ -30,6 +31,7 @@ function App() {
           <Route path="/Products" element={<Products />} />
           <Route path="/ProductCategory" element={<ProductCategory />} />
           <Route path="/SingleProduct" element={<SingleProductPage />} />
+          <Route path="/SearchResults" element={<SearchResults />} />
           <Route path="/Support" element={<Support />} />
           <Route path="/Community" element={<Community />} />
         </Routes>
