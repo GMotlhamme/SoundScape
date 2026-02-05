@@ -48,7 +48,7 @@ The application is built with modern web technologies to ensure scalability, per
 ---
 
 ##  Visual Representation  
-<section display="flex" flex-direction="column" gap="14">
+<section display="flex" flex-direction="column" gap="14px">
    
 <img width="1911" height="917" alt="image" src="https://github.com/user-attachments/assets/be136259-7f15-4c71-9ea4-9fd0b7a50689" />
 <img width="1915" height="916" alt="image" src="https://github.com/user-attachments/assets/d0fd0749-49e6-4b1a-8649-0ae38ff52cbc" />
