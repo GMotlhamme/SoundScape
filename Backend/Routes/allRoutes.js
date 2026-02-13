@@ -24,6 +24,8 @@ import multer from 'multer';
 import removeProductController from '../Controllers/removeProductController.js';
 import updateProductInfoController from '../Controllers/updateProductInfoController.js';
 import getTopProductsController from '../Controllers/getTopProductsController.js';
+import forgotPasswordController from '../Controllers/forgotPasswordController.js';
+import resetPasswordController from '../Controllers/resetPasswordController.js';
 export const router = express.Router();
 export const multerUpload = multer({ dest: 'multerUploads/' });
  
@@ -67,6 +69,9 @@ router.post('/auth/logout', logoutUserController);
 router.get('/auth/profile', authenticateTokenMiddleware, getUserProfileController);
 
 router.patch('/auth/profile', authenticateTokenMiddleware, updateUserInfoController);
+
+router.post('/forgot-password', forgotPasswordController);
+router.post('/reset-password', resetPasswordController);
 
 //Order related endpoints
 router.get('/orders', authenticateTokenMiddleware, getOrderHistoryController);// get user order history
