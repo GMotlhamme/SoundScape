@@ -1,4 +1,5 @@
 import { client } from "../index.js";
+import convertProductData from "../Utils/converter.js";
 /**
  * Searches for products with a name containing the given query.
  * The search is case-insensitive and uses the ILIKE operator.
@@ -11,8 +12,10 @@ export default async function searchController(req, res) {
         const { query } = req.params;
         const searchQuery = 'SELECT brand, category, name, price, images FROM products WHERE name ILIKE $1';
         const result = await client.query(searchQuery, [`%${query}%`]);//prevent SQL injection by using parameterized query. the query value isn't inserted directly into the SQL string
-        if (result.rows.length === 0) return res.status(404).json({ message: "No products found" });
-        return res.json(result.rows);
+        result.rows.forEach(product => {
+            convertProductData(product);
+        });
+        return res.json({products: result.rows});
     } catch (error) {
         console.log("Error searching products", error);
         return res.json({ message: "Error searching products", error: error.message });
