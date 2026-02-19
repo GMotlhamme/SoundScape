@@ -13,14 +13,22 @@ import Register from "./pages/Register";
 import UploadProduct from "./pages/UploadProduct";
 import ProtectedRoute from "./lib/ProtectedRoute";
 import SearchResults from "./pages/SearchResults";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.min.css";
+
 function App() {
   return (
     <>
-
+<div className="App">
+    <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword />} />
+          <Route path="/ResetPassword" element={<ResetPassword />} />
           <Route path="/Register" element={<Register />} />
           
             <Route path="/Profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
@@ -36,6 +44,7 @@ function App() {
           <Route path="/Community" element={<Community />} />
         </Routes>
       </BrowserRouter>
+    </div>
     </>
   )
 }

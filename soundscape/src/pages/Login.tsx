@@ -36,6 +36,10 @@ export default function Login(){
                 </fieldset>
                 <br />
                 <button type="submit" className="cursor-pointer bg-neutral-900 hover:bg-neutral-800 rounded p-2">Login</button>
+                
+                <Link to="/ForgotPassword">
+                <p className="flex cursor-pointer hover:text-blue-700 justify-center mt-4 text-blue-500 underline">Forgot Password?</p>
+                </Link>
                 <Link to="/Register">
                 <p className="flex cursor-pointer hover:text-blue-700 justify-center mt-4 text-blue-500 underline">Don't have have an account?</p>
                 </Link>
