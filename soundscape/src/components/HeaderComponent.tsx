@@ -72,13 +72,16 @@ export default function Header() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const searchQuery = formData.get("search") as string;
-    const result = await axios.get(`${import.meta.env.VITE_SEARCH_URL}${searchQuery}`);
-    if(result.data.products && result.data.products.length > 0){
+    try {
+      const result = await axios.get(`${import.meta.env.VITE_SEARCH_URL}${searchQuery}`);
+      const products = result?.data?.products ?? [];
       setLoading(false);
-      navigate(`/SearchResults`, { state: result.data.products });
+      navigate(`/SearchResults`, { state: products });
+    } catch (error) {
+      console.error("Search request failed:", error);
+      setLoading(false);
+      navigate(`/SearchResults`, { state: [] });
     }
-    setLoading(false);
-    navigate(`/SearchResults`, { state: [] });
     
   }
   return (
