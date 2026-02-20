@@ -117,7 +117,7 @@ The application is built with modern web technologies to ensure scalability, per
 
    # Start frontend
    cd ../soundscape
-   npm start
+   npm run dev
    ```
 
 ---
