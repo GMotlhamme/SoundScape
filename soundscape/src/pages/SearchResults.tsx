@@ -6,10 +6,8 @@ import { Link, useLocation } from "react-router";
 export default function SearchResults() {
     const location = useLocation();
     const storeItem: ProductInformation[] = location.state ;
-    console.log(storeItem);
     
-    
-    
+
     return(
         <>
         <Header />
