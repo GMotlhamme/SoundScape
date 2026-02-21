@@ -10,10 +10,12 @@ export default async function getUserCartController(req, res) {
         const cartQuery = 'SELECT * FROM checkout WHERE user_id = $1';
         const result = await client.query(cartQuery, [user_id]);
         if (result.rows.length === 0 || !result.rows) {
-            return res.status(200).json({ message: "No cart items found" })
+            return res.status(404).json({ message: "No cart items found" })
         }
         const cart = result.rows.map(item => item.product_id);
-        
+        //retrieving the product id from the database as an array of strings, 
+        // we need to split the string if it contains multiple product ids 
+        // and convert them to integers before sending the response
         if (cart[0].includes(",")) {
             const cartItemList = cart.map(item => item.split(',')).flat();
             const cartItemsInt = cartItemList.map(item => parseInt(item));

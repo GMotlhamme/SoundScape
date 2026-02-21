@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { router } from './Routes/allRoutes.js';
 import dotenv from 'dotenv';
+import stripe from 'stripe';
 import { Client } from 'pg';
 dotenv.config()
 
