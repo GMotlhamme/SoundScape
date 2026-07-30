@@ -1,7 +1,7 @@
 # 🎵 Music & Entertainment E-Commerce Platform  
 
 ## 📖 Overview  
-This project is a full-stack **E-commerce application** designed to provide users with a seamless platform to purchase music and entertainment-related equipment. Products range from **earphones and speakers to professional instruments**.  
+I have a great appreciation for music and equipment that adds a certain type of surreal experience, so I made a platform to find the quality products all in one location instead of traveling from site to site. As a result, this project is a full-stack **E-commerce application** designed to provide users with a seamless platform to purchase music and entertainment-related equipment. Products range from **earphones and speakers to professional instruments**.  
 
 The application is built with modern web technologies to ensure scalability, performance, and security.  
 
